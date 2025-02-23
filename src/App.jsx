@@ -1,9 +1,12 @@
 import React from 'react'
+import NavBar from './Components/layout/NavBar'
+import HomePage from './pages/home'
 
 const App = () => {
   return (
     <div>
-       <h1 className='bg-red-700'>Workopia</h1>
+       <NavBar/>
+       <HomePage/>
     </div>
   )
 }
