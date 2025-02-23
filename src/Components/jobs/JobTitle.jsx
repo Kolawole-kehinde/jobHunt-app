@@ -1,9 +1,9 @@
 import React from 'react'
 
-const JobTitle = ({title}) => {
+const JobTitle = ({ children }) => {
   return (
     <div className="text-center text-3xl mb-4 font-bold border border-gray-300 p-3">
-        {title}
+        {children }
     </div>
   )
 }
