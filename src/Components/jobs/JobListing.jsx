@@ -2,6 +2,8 @@ import JobTitle from "./JobTitle";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import Job from "./Job";
 import { jobListings } from "../../constant/job";
+import { Link } from "react-router";
+
 const JobListings = () => {
   return (
     <section>
@@ -13,14 +15,12 @@ const JobListings = () => {
             <Job key={job.id} {...job} />
           ))}
         </div>
+        
         <div className="flex justify-center items-center">
-          <a
-            href="listings.html"
-            className="flex items-center gap-1 text-xl text-center"
-          >
+          <Link to="/jobs/alljob" className="flex items-center gap-1 text-xl text-center">
             <FaArrowAltCircleRight />
             Show All Jobs
-          </a>
+          </Link>
         </div>
       </div>
     </section>
