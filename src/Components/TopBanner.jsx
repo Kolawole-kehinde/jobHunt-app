@@ -2,7 +2,7 @@ import React from 'react'
 
 const TopBanner = () => {
   return (
-    <section className="bg-blue-900 text-white py-6 text-center">
+    <section className="bg-blue-900 text-white py-6 text-center md:p-0 px-2">
     <div className="container mx-auto">
       <h2 className="text-3xl font-semibold">Unlock Your Career Potential</h2>
       <p className="text-lg mt-2">

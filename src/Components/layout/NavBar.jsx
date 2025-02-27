@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 import { routes } from "../../constant/navRoute";
 import { FaEdit } from "react-icons/fa";
+import { TbMenuDeep } from "react-icons/tb";
 const NavBar = () => {
   const active = (isActive) => {
     return isActive ? "text-yellow-500" : "text-white";
@@ -9,9 +10,13 @@ const NavBar = () => {
     <header className="bg-blue-900 text-white p-4">
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-3xl font-semibold">
+          
           <NavLink to="/">Workopia</NavLink>
         </h1>
-        <nav className="flex items-center gap-4">
+        <button>
+          <TbMenuDeep fontSize={30}/>
+          </button>
+        <nav className="items-center gap-4 lg:flex hidden">
           {routes.map(({ name, path, id }) => (
             <NavLink
               to={path}
@@ -21,7 +26,7 @@ const NavBar = () => {
               {name}
             </NavLink>
           ))}
-
+          
           <a
             href="post-job.html"
             className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded hover:shadow-md transition duration-300 flex items-center gap-1"
