@@ -1,5 +1,7 @@
+import { Link } from "react-router";
+
 const Job = (props) => {
-    const { title, description, salary, city, state, tags } = props;
+    const { title, description, salary, city, state, tags, id } = props;
     return (
       <div className="rounded-lg shadow-md bg-white">
         <div className="p-4">
@@ -19,6 +21,9 @@ const Job = (props) => {
               <strong>Tags:</strong> <span>{tags.join(" , ")}</span>
             </li>
           </ul>
+          <Link to={`/jobs/${id}`} className="block w-full text-center px-5 py-2.5 shodow-sm rounded border text-base font-medium text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+            Details
+          </Link>
           
         </div>
       </div>

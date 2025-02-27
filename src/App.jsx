@@ -3,8 +3,8 @@ import NavBar from "./Components/layout/NavBar";
 import HomePage from "./pages/home";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import ButtomBanner from "./Components/ButtomBanner";
 import AllJobsPage from "./pages/jobs";
+import JobDetailsPage from "./pages/jobs/JobDetails";
 
 const App = () => {
   return (
@@ -21,11 +21,12 @@ const App = () => {
           <Route index element={<HomePage />} />
           <Route path="jobs">
           <Route index element={<AllJobsPage/>} />
+          <Route path=":id" element={<JobDetailsPage/>}/>
         </Route>
         </Route>
        
         </Routes>
-      <ButtomBanner/>
+      
     </>
   );
 };
