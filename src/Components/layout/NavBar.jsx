@@ -1,40 +1,44 @@
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { routes } from "../../constant/navRoute";
 import { FaEdit } from "react-icons/fa";
 import { TbMenuDeep } from "react-icons/tb";
+import { IoClose } from "react-icons/io5";
+import { useState } from "react";
+import Logo from "./Logo";
+import Menu from "./Menu";
+
 const NavBar = () => {
-  const active = (isActive) => {
-    return isActive ? "text-yellow-500" : "text-white";
-  };
+  const [showMenu, setShowMenu] = useState(false);
+  const toggleMenu = () => {
+    setShowMenu(!showMenu)
+    
+  }
   return (
-    <header className="bg-blue-900 text-white p-4">
-      <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-3xl font-semibold">
-          
-          <NavLink to="/">Workopia</NavLink>
-        </h1>
-        <button>
-          <TbMenuDeep fontSize={30}/>
+    <header className="bg-blue-900 text-white p-4 relative">
+      <nav className="container mx-auto flex justify-between items-center">
+        <Logo />
+        <button className="lg:hidden block">
+          <TbMenuDeep fontSize={30} onClick={toggleMenu}/>
           </button>
-        <nav className="items-center gap-4 lg:flex hidden">
-          {routes.map(({ name, path, id }) => (
-            <NavLink
-              to={path}
-              className={({ isActive }) => active(isActive)}
-              key={id}
-            >
-              {name}
-            </NavLink>
-          ))}
-          
-          <a
-            href="post-job.html"
-            className="bg-yellow-500 hover:bg-yellow-600 text-black px-4 py-2 rounded hover:shadow-md transition duration-300 flex items-center gap-1"
-          >
-            <FaEdit /> Post a Job
-          </a>
-        </nav>
-      </div>
+          <Menu menuStyle={"items-center gap-4 lg:flex hidden"}/>
+        
+      </nav>
+
+      {/* NavBar Mobile Responsive */}
+       {
+        showMenu && (
+          <nav className="fixed inset-0 z-40 h-[250px] w-full bg-blue-900 p-5 space-y-5">
+             <div className="flex justify-between items-center">
+             <Logo/>
+             <button onClick={toggleMenu}>
+            <IoClose fontSize={30}/>
+            </button>
+             </div>
+
+            <Menu menuStyle="flex flex-col gap-4"/>
+          </nav>
+        )}
+       
     </header>
   );
 };
