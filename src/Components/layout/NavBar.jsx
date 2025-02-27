@@ -35,7 +35,7 @@ const NavBar = () => {
             </button>
              </div>
 
-            <Menu menuStyle="flex flex-col gap-4"/>
+            <Menu menuStyle="space-y-5 gap-6"/>
           </nav>
         )}
        

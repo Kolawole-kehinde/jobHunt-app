@@ -2,7 +2,7 @@ import React from 'react'
 
 const ButtomBanner = () => {
   return (
-    <section className=" my-6">
+    <section className="container mx-auto my-6">
       <div
         className="bg-blue-800 text-white rounded p-4 flex items-center justify-between"
       >

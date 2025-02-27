@@ -8,7 +8,7 @@ const Menu = ({menuStyle}) => {
         return isActive ? "text-yellow-500" : "text-white";
       };
   return (
-    <>
+    
         <menu className={menuStyle}>
              {routes.map(({ name, path, id }) => (
               <li key={id}>
@@ -28,7 +28,7 @@ const Menu = ({menuStyle}) => {
           </Link>
           </menu>
           
-    </>
+
   )
 }
 
