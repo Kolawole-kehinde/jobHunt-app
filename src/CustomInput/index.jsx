@@ -10,7 +10,7 @@ const CustomInput = ({label, type, name,  placeholder, className, ...res}) => {
            <input
             type={type || "text"}
             name={name}
-            placeholder={placeholde}
+            placeholder={placeholder}
             className={`w-full px-4 py-2 border rounded focus:outline-none ${className}`}
            { ...res}
           />
