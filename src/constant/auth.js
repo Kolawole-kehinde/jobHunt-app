@@ -30,3 +30,13 @@ export  const registerInput = [
       placeholder: "Confirm Password",
     }
   ]
+ export  const loginLists = [
+    { name: "email", 
+    type: "email", 
+    placeholder: "Email Address"
+},
+    { name: "password",
+    type: "password",
+     placeholder: "Password"
+    },
+  ];
