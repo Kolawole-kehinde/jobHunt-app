@@ -2,10 +2,11 @@ import React from 'react'
 
 const ButtomBanner = () => {
   return (
-    <section className="container mx-auto my-6">
+    <section className="my-6">
       <div
-        className="bg-blue-800 text-white rounded p-4 flex items-center justify-between"
+        className="bg-blue-800 "
       >
+        <div className='container mx-auto text-white rounded p-4 flex items-center justify-between'>
         <div>
           <h2 className="text-xl font-semibold">Looking to hire?</h2>
           <p className="text-gray-200 text-lg mt-2">
@@ -18,6 +19,7 @@ const ButtomBanner = () => {
         >
           <i className="fa fa-edit"></i> Post a Job
         </a>
+        </div>
       </div>
     </section>
   )

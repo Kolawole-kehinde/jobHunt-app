@@ -3,7 +3,7 @@ import { routes } from '../../constant/navRoute'
 import { Link, NavLink } from 'react-router'
 import { FaEdit } from 'react-icons/fa'
 
-const Menu = ({menuStyle}) => {
+const Menu = ({menuStyle, toggleMenu}) => {
     const active = (isActive) => {
         return isActive ? "text-yellow-500" : "text-white";
       };
@@ -15,6 +15,7 @@ const Menu = ({menuStyle}) => {
                   <NavLink
               to={path}
               className={({ isActive }) => active(isActive)}
+              onClick={toggleMenu}
             >
               {name}
             </NavLink>

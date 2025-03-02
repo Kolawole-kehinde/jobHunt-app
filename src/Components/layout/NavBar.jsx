@@ -27,15 +27,15 @@ const NavBar = () => {
       {/* NavBar Mobile Responsive */}
        {
         showMenu && (
-          <nav className="fixed inset-0 z-40 h-[250px] w-full bg-blue-900 p-5 space-y-5">
+          <nav className="fixed inset-0 z-40 h-[400px] w-full bg-blue-900 p-5 space-y-5">
              <div className="flex justify-between items-center">
-             <Logo/>
+             <Logo toggleMenu={toggleMenu}/>
              <button onClick={toggleMenu}>
             <IoClose fontSize={30}/>
             </button>
              </div>
 
-            <Menu menuStyle="space-y-5 gap-6"/>
+            <Menu menuStyle="space-y-5 gap-6" toggleMenu={toggleMenu}/>
           </nav>
         )}
        
