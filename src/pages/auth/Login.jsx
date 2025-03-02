@@ -1,3 +1,4 @@
+import CustomButton from "../../Components/CustomButton";
 import AuthLayout from "../../Components/layout/AuthLayout";
 import { loginLists } from "../../constant/auth";
 import CustomInput from "../../CustomInput";
@@ -21,12 +22,10 @@ const Login = () => {
          />
         ))}
        
-        <button
-          type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none"
-        >
-          Login
-        </button>
+       <CustomButton>
+        Login
+
+       </CustomButton>
       </form>
     </AuthLayout>
   );

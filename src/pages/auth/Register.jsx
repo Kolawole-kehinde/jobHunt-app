@@ -1,3 +1,4 @@
+import CustomButton from "../../Components/CustomButton";
 import AuthLayout from "../../Components/layout/AuthLayout";
 import { registerInput } from "../../constant/auth";
 import CustomInput from "../../CustomInput";
@@ -23,13 +24,7 @@ const Register = () => {
            />
           ))
         }
-        
-        <button
-          type="submit"
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none"
-        >
-          Register
-        </button>
+       <CustomButton>Register</CustomButton>
       </form>
     </AuthLayout>
   );
