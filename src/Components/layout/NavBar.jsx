@@ -27,7 +27,7 @@ const NavBar = () => {
       {/* NavBar Mobile Responsive */}
        {
         showMenu && (
-          <nav className="fixed inset-0 z-40 h-[400px] w-full bg-blue-900 p-5 space-y-5">
+          <nav className="fixed inset-0 z-40 h-[300px] w-full bg-blue-900 p-5 space-y-5">
              <div className="flex justify-between items-center">
              <Logo toggleMenu={toggleMenu}/>
              <button onClick={toggleMenu}>

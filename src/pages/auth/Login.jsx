@@ -1,7 +1,7 @@
-import CustomButton from "../../Components/CustomButton";
 import AuthLayout from "../../Components/layout/AuthLayout";
 import { loginLists } from "../../constant/auth";
 import CustomInput from "../../CustomInput";
+import CustomButton from "../../Components/CustomBotton";
 
 const Login = () => {
  
