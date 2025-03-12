@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 
 const CustomInput = ({
   label,
@@ -7,9 +8,10 @@ const CustomInput = ({
   name,
   placeholder,
   className="w-full px-4 py-2 border rounded focus:outline-none"}) => {
-    const [showPassword, setShowPassword] =useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    
     const handleShowPassword = () => {
-      setShowPassword((prevState) => !prevState);
+    return  setShowPassword((prevState) => !prevState);
     }
   return (
     <div className="mb-4 relative">
