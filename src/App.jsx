@@ -5,6 +5,8 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import AllJobsPage from "./pages/jobs";
 import JobDetailsPage from "./pages/jobs/JobDetails";
+import Dashboard from "./pages/Dashboard";
+
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
           <Route path="jobs">
           <Route index element={<AllJobsPage/>} />
           <Route path=":id" element={<JobDetailsPage/>}/>
+          <Route path="dashboard" element={<Dashboard/>}/>
+
         </Route>
         </Route>
        
