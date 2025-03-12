@@ -11,7 +11,7 @@ const Dashboard = () => {
           <div className="flex flex-col items-center justify-center">
             <h2 className="text-lg font-semibold mb-4">Profile Info</h2>
             <img
-              src="/images/profile.jpg"
+              src="/images/khenny.jpg"
               className="rounded-full size-20 mb-4"
               alt="Avatar"
             />
@@ -30,7 +30,7 @@ const Dashboard = () => {
                 type="text"
                 id="name"
                 placeholder="Test User"
-                className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -47,7 +47,7 @@ const Dashboard = () => {
                 type="email"
                 id="email"
                 placeholder="Email Address"
-                className="mt-2 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="mt-2 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -63,7 +63,7 @@ const Dashboard = () => {
               <input
                 type="file"
                 id="avatar"
-                className="mt-2 p-2 border border-gray-300 rounded-md focus:outline-none"
+                className="mt-2 p-2 border border-gray-300 rounded focus:outline-none"
               />
             </div>
 
@@ -71,7 +71,7 @@ const Dashboard = () => {
             <div>
               <button
                 type="submit"
-                className="w-full py-2 bg-green-400 text-white font-semibold rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-full py-2 bg-green-400 text-white font-semibold rounded hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
               >
                 Save
               </button>
@@ -93,10 +93,10 @@ const Dashboard = () => {
                 <p className="text-sm text-gray-600">Part-Time</p>
               </div>
               <div className="flex items-center gap-4 text-white ">
-                <button className="bg-blue-500 px-3 py-1 rounded-md capitalize">
+                <button className="bg-blue-500 px-3 py-1 rounded capitalize">
                   edit
                 </button>
-                <button className="bg-green-500 px-3 py-1 rounded-md capitalize">
+                <button className="bg-green-500 px-3 py-1 rounded capitalize">
                   delete
                 </button>
               </div>
@@ -138,10 +138,10 @@ const Dashboard = () => {
               <p className="text-sm text-gray-600">Full-Time</p>
             </div>
             <div className="flex items-center gap-4 text-white ">
-              <button className="bg-blue-500 px-3 py-1 rounded-md capitalize">
+              <button className="bg-blue-500 px-3 py-1 rounded capitalize">
                 edit
               </button>
-              <button className="bg-green-500 px-3 py-1 rounded-md capitalize">
+              <button className="bg-green-500 px-3 py-1 rounded capitalize">
                 delete
               </button>
             </div>
@@ -159,8 +159,8 @@ const Dashboard = () => {
                  <p className="text-sm text-gray-600">Part-Time</p>
                  </div>
                 <div className="flex items-center gap-4 text-white ">
-                    <button className="bg-blue-500 px-3 py-1 rounded-md capitalize">edit</button>
-                    <button className="bg-green-500 px-3 py-1 rounded-md capitalize">delete</button>
+                    <button className="bg-blue-500 px-3 py-1 rounded capitalize">edit</button>
+                    <button className="bg-green-500 px-3 py-1 rounded capitalize">delete</button>
                 </div>
                 </div>
 
