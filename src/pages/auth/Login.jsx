@@ -7,19 +7,19 @@ import { loginSchema } from "../../utils/Schema/Schema";
 import { loginInputs } from "../../constant/auth";
 
 const Login = () => {
-  // const initialState = {
-  //   email: "",
-  //   password: "",
-  // };
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   formState: { errors },
-  // } = useFormValidate(initialState, loginSchema);
-  // const navigate = useNavigate();
-  // const onSubmit = (data) => {
-  //   if (data) return navigate("/dashboard");
-  // };
+  const initialState = {
+    email: "",
+    password: "",
+  };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useFormValidate(initialState, loginSchema);
+  const navigate = useNavigate();
+  const onSubmit = (data) => {
+    if (data) return navigate("/dashboard");
+  };
   return (
     <AuthLayout
       title={"Login"}
@@ -35,8 +35,8 @@ const Login = () => {
             placeholder={placeholder}
             type={type}
             key={name}
-            // register={register}
-            // error={errors[name]?.message}
+            register={register}
+            error={errors[name]?.message}
           />
         ))}
         <CustomButton>Login</CustomButton>

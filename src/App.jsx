@@ -5,7 +5,8 @@ import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import AllJobsPage from "./pages/jobs";
 import JobDetailsPage from "./pages/jobs/JobDetails";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/dashboard";
+
 
 
 const App = () => {
