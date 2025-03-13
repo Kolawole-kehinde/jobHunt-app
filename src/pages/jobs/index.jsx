@@ -1,7 +1,7 @@
-import React from 'react'
+
 import JobListings from '../../Components/jobs/JobListing'
 import TopBanner from '../../Components/TopBanner'
-import ShowcaseSearch from '../../Components/layout/ShowcaseSearch'
+import ShowcaseSearch from '../../Components/ShowcaseSearch'
 
 const AllJobsPage = () => {
   return (

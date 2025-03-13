@@ -1,42 +1,47 @@
-export  const registerInput = [
-    {
-      name: "name",
-      type: "text",
-      placeholder: "Full Name",
-    },
-    {
-      name: "email",
-      type: "email",
-      placeholder: "Email Address",
-    },
-    {
-      name: "city",
-      type: "text",
-      placeholder: "City",
-    },
-    {
-      name: "state",
-      type: "text",
-      placeholder: "State",
-    },
-    {
-      name: "password",
-      type: "password",
-      placeholder: "Password",
-    },
-    {
-      name: "password_confirmation",
-      type: "password",
-      placeholder: "Confirm Password",
-    }
-  ]
- export  const loginLists = [
-    { name: "email", 
-    type: "email", 
-    placeholder: "Email Address"
-},
-    { name: "password",
+export const registerInputs = [
+  {
+    name: "name",
+    placeholder: "Full Name",
+    type: "text",
+  },
+  {
+    name: "email",
+    placeholder: "Email Address",
+    type: "email",
+  },
+  {
+    name: "city",
+    placeholder: "City",
+    type: "text",
+  },
+  {
+    name: "state",
+    placeholder: "State",
+    type: "text",
+  },
+  {
+    name: "password",
+    placeholder: "Password",
     type: "password",
-     placeholder: "Password"
-    },
-  ];
+  },
+  {
+    name: "passwordConfirmation",
+    placeholder: "Confirm Password",
+    type: "password",
+  },
+];
+
+export const loginInputs = [
+  {
+    name: "email",
+    placeholder: "Email Address",
+    type: "email",
+    label: "Email",
+  },
+  {
+    name: "password",
+    placeholder: "Password",
+    type: "password",
+    label: "Password",
+  },
+];
