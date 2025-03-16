@@ -29,12 +29,8 @@ const CustomInput = ({
           })}
         />
         {type === "password" && (
-          <div className=" absolute top-1/2 right-2 -translate-y-1/2"  onClick={togglePassword } >
-            {show ? (
-              <FaRegEye/>
-            ) : (
-              <FaRegEyeSlash />
-            )}
+          <div className=" absolute top-1/2 right-2 -translate-y-1/2" onClick={togglePassword}> 
+            {show ? <FaRegEye /> : <FaRegEyeSlash />}
           </div>
         )}
       </div>

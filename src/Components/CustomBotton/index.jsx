@@ -9,8 +9,8 @@ const CustomButton = ({
     <button
     type={type || "submit"}
     {...res}
-  className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded focus:outline-none"
-  >
+  className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 flex items-center justify-center gap-4  focus:outline-none"
+>
     {children}
   </button>
   )

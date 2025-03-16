@@ -7,31 +7,26 @@ import AllJobsPage from "./pages/jobs";
 import JobDetailsPage from "./pages/jobs/JobDetails";
 import Dashboard from "./pages/dashboard";
 
-
-
 const App = () => {
   return (
     <>
       <NavBar />
       <Routes>
         <Route path="/">
-        {/* Unprotected Pages/Routes */}
-        <Route path="auth">
+          {/* Unprotected Pages/Routes */}
+          <Route path="auth">
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
           </Route>
 
           <Route index element={<HomePage />} />
           <Route path="jobs">
-          <Route index element={<AllJobsPage/>} />
-          <Route path=":id" element={<JobDetailsPage/>}/>
-          <Route path="dashboard" element={<Dashboard/>}/>
-
+            <Route index element={<AllJobsPage />} />
+            <Route path=":id" element={<JobDetailsPage />} />
+          </Route>
+          <Route path="dashboard" element={<Dashboard />} />
         </Route>
-        </Route>
-       
-        </Routes>
-      
+      </Routes>
     </>
   );
 };

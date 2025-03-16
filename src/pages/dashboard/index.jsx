@@ -118,7 +118,7 @@ const Dashboard = () => {
                 </span>
               </p>
               <p className="text-sm font-bold">
-                Name: <span className="font-normal">khennycool</span>
+                Message: <span className="font-normal">khennycool</span>
               </p>
               <div className="flex flex-col items-start gap-2 mt-4">
                 <button className="flex items-center gap-1 text-blue-500 text-sm">

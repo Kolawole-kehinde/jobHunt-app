@@ -3,8 +3,8 @@ import CustomButton from '../../Components/CustomBotton'
 import CustomInput from "../../components/CustomInput";
 import AuthLayout from '../../Components/layout/AuthLayout'
 import useFormValidate from "../../hooks/useFormValidate";
-import { loginSchema } from "../../utils/Schema/Schema";
 import { loginInputs } from "../../constant/auth";
+import { loginSchema } from "../../Schema/authSchema";
 
 const Login = () => {
   const initialState = {

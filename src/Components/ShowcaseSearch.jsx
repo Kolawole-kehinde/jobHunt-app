@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import CustomButton from '../Components/CustomBotton'
 import { FaSearch } from "react-icons/fa";
 import CustomInput from "../components/CustomInput";
@@ -29,10 +28,7 @@ const SearchShowcase = ({ className }) => {
         />
       ))}
 
-      <CustomButton
-        className=" md:w-auto  px-4 py-2 flex items-center gap-2 justify-center"
-        onClick={() => alert("hello")}
-      >
+      <CustomButton className="px-10 py-2 flex items-center gap-2">
         <FaSearch /> Search
       </CustomButton>
     </form>

@@ -1,11 +1,17 @@
 import CustomButton from '../../Components/CustomBotton'
 import CustomInput from "../../components/CustomInput";
 import AuthLayout from '../../Components/layout/AuthLayout'
-import { registerSchema } from '../../utils/Schema/Schema'
 import useFormValidate from '../../hooks/useFormValidate'
 import { useNavigate } from "react-router";
 import { registerInputs } from '../../constant/auth';
+import { useState } from 'react';
+import { registerSchema } from '../../Schema/authSchema';
+import { axiosInstance } from '../../services/axiosInstance';
+
+
+
 const Register = () => {
+  const [loading, setLoading] = useState(false);
   const initialState = {
     name: "",
     email: "",
@@ -22,8 +28,27 @@ const Register = () => {
   } = useFormValidate(initialState, registerSchema);
 
   const navigate = useNavigate();
-  const onSubmit = (data) => {
-    if (data) return navigate("/dashboard");
+  const onSubmit = async (data) => {
+    const payload = {
+      ...data,
+      username: data.name,
+      email: data.email,
+    password: data.password,
+  }
+    setLoading(true);
+    try {
+      const res  = await axiosInstance.post("/auth/register", payload);
+      console.log(res.data)
+      console.log(data)
+      
+    } catch (error) {
+       console.log(error);
+    }
+    finally {
+        setLoading(false)
+    }
+    // if (data) return navigate("/dashboard");
+  
     reset()
   };
   return (
@@ -44,7 +69,7 @@ const Register = () => {
             error={errors[name]?.message}
           />
         ))}
-        <CustomButton>Register</CustomButton>
+        <CustomButton>{loading ? "Loadind" : "Register"}</CustomButton>
       </form>
     </AuthLayout>
   );
