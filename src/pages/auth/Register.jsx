@@ -7,10 +7,12 @@ import { registerInputs } from '../../constant/auth';
 import { useState } from 'react';
 import { registerSchema } from '../../Schema/authSchema';
 import { axiosInstance } from '../../services/axiosInstance';
+import { useAuth } from '../../hooks/useAuth';
 
 
 
 const Register = () => {
+  const {setUser} = useAuth();
   const [loading, setLoading] = useState(false);
   const initialState = {
     name: "",
@@ -38,8 +40,7 @@ const Register = () => {
     setLoading(true);
     try {
       const res  = await axiosInstance.post("/auth/register", payload);
-      console.log(res.data)
-      console.log(data)
+     setUser(res?.data)
       
     } catch (error) {
        console.log(error);
@@ -47,7 +48,7 @@ const Register = () => {
     finally {
         setLoading(false)
     }
-    // if (data) return navigate("/dashboard");
+   return navigate("/dashboard");
   
     reset()
   };

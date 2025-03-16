@@ -1,11 +1,9 @@
-import { Link, NavLink } from "react-router";
-import { routes } from "../../constant/navRoute";
-import { FaEdit } from "react-icons/fa";
-import { TbMenuDeep } from "react-icons/tb";
+
 import { IoClose } from "react-icons/io5";
 import { useState } from "react";
 import Logo from "./Logo";
 import Menu from "./Menu";
+import { TbMenuDeep } from "react-icons/tb";
 
 const NavBar = () => {
   const [showMenu, setShowMenu] = useState(false);
