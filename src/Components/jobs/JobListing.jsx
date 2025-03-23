@@ -10,10 +10,13 @@ import { supabase } from "../../libs/supabase";
 const JobListings = ({ title = "Recent Jobs", ShowAllJobsBtn = true }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
     const getJobs = async () => {
       setLoading(true);
+      setErrorMsg(""); 
+      setErrorMsg("Failed to load job listings. Please try again later.");
       try {
         const { data, error } = await supabase.from("jobs").select("*");
         if (error) {
@@ -36,12 +39,21 @@ const JobListings = ({ title = "Recent Jobs", ShowAllJobsBtn = true }) => {
       <div className="container mx-auto p-4 mt-4">
         <JobTitle>{title}</JobTitle>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4 mb-6">
-          {jobListings.map((job) => (
-            <Job key={job.id} {...job} />
-          ))}
-        </div>
-        {ShowAllJobsBtn && (
+        {loading && (
+            <div className=" h-[400px] flex justify-center items-center">
+              <p className="text-3xl lg:text-4xl font-bold text-blue-500">Loading...</p>
+
+            </div>
+        )}
+
+        {data?.length > 0 && (
+          <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4 mb-6">
+            {data?.map((job) => (
+              <Job key={job.id} {...job} />
+            ))}
+          </div>
+        )}
+        {ShowAllJobsBtn && data?.length > 0 && (
           <div className="flex justify-center items-center">
             <Link
               to="/jobs"
