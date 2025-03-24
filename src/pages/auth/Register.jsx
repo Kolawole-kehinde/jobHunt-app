@@ -1,18 +1,16 @@
-import CustomButton from '../../Components/CustomBotton'
+import CustomButton from "../../Components/CustomBotton";
 import CustomInput from "../../components/CustomInput";
-import AuthLayout from '../../Components/layout/AuthLayout'
-import useFormValidate from '../../hooks/useFormValidate'
+import AuthLayout from "../../Components/layout/AuthLayout";
+import useFormValidate from "../../hooks/useFormValidate";
 import { useNavigate } from "react-router";
-import { registerInputs } from '../../constant/auth';
-import { useState } from 'react';
-import { registerSchema } from '../../Schema/authSchema';
-import { axiosInstance } from '../../services/axiosInstance';
-import { useAuth } from '../../hooks/useAuth';
-
-
+import { registerInputs } from "../../constant/auth";
+import { useState } from "react";
+import { registerSchema } from "../../Schema/authSchema";
+import { useAuth } from "../../hooks/useAuth";
+import { signUpApi } from "../../services/auth";
 
 const Register = () => {
-  const {setUser} = useAuth();
+  const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
   const initialState = {
     name: "",
@@ -25,33 +23,33 @@ const Register = () => {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
+    reset,
   } = useFormValidate(initialState, registerSchema);
 
   const navigate = useNavigate();
   const onSubmit = async (data) => {
     const payload = {
-      ...data,
-      username: data.name,
+      fullName: data.name,
       email: data.email,
-    password: data.password,
-  }
+      password: data.password,
+    };
     setLoading(true);
     try {
-      const res  = await axiosInstance.post("/auth/register", payload);
-     setUser(res?.data)
-      
+      const res = await signUpApi(payload);
+      console.log(res);
+      setUser(res);
+      reset();
+      navigate("/dashboard");
     } catch (error) {
-       console.log(error);
+      console.log(error);
+    } finally {
+      setLoading(false);
     }
-    finally {
-        setLoading(false)
-    }
-   return navigate("/dashboard");
-  
-    reset()
-  };
+};
+
+
+
   return (
     <AuthLayout
       title={"Register"}
