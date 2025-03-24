@@ -8,6 +8,7 @@ import { useState } from "react";
 import { registerSchema } from "../../Schema/authSchema";
 import { useAuth } from "../../hooks/useAuth";
 import { signUpApi } from "../../services/auth";
+import toast from "react-hot-toast";
 
 const Register = () => {
   const { setUser } = useAuth();
@@ -40,6 +41,7 @@ const Register = () => {
       console.log(res);
       setUser(res);
       reset();
+      toast.success("User Register Successfully");
       navigate("/dashboard");
     } catch (error) {
       console.log(error);
@@ -68,7 +70,7 @@ const Register = () => {
             error={errors[name]?.message}
           />
         ))}
-        <CustomButton>{loading ? "Loadind" : "Register"}</CustomButton>
+        <CustomButton>{loading ? "Loading" : "Register"}</CustomButton>
       </form>
     </AuthLayout>
   );
