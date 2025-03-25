@@ -27,3 +27,25 @@ export const signUpApi = async (payload) => {
         return userData;  // Return user data after inserting it
     }
 };
+
+export const SignInApi = async (payload) => {
+    const {email, password} = payload;
+    let { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+
+      if (error) throw new Error(error.message);
+
+       if (data?.user) { 
+        const { data: userData, error: userError } = await supabase
+            .from("users")
+            .select()
+            .eq("email", data?.user?.email)
+            .single();
+
+        if (userError) throw new Error(userError.message);
+        return userData; 
+    }
+
+    }

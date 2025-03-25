@@ -1,7 +1,6 @@
 import React from 'react';
 import { routes } from '../../constant/navRoute';
-import { Link, NavLink } from 'react-router';
-import { FaEdit } from 'react-icons/fa';
+import {NavLink } from 'react-router';
 import { useAuth } from '../../hooks/useAuth';
 import AuthMenu from './AuthMenu';
 
@@ -10,11 +9,11 @@ const Menu = ({ menuStyle, toggleMenu }) => {
     return isActive ? "text-yellow-500" : "text-white";
   };
 
-  const { user, handleLogout } = useAuth();
+  const { user} = useAuth();
   return (
     <menu className={menuStyle}>
       {user ? (
-       <AuthMenu  menuStyle={menuStyle} toggleMenu={toggleMenu} handleLogout={handleLogout}/>
+       <AuthMenu  menuStyle={menuStyle} toggleMenu={toggleMenu}/>
       ) : (
         routes.map(({ name, path, id }) => (
           <li key={id}>

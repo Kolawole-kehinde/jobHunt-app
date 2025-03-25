@@ -5,8 +5,14 @@ import AuthLayout from '../../Components/layout/AuthLayout'
 import useFormValidate from "../../hooks/useFormValidate";
 import { loginInputs } from "../../constant/auth";
 import { loginSchema } from "../../Schema/authSchema";
+import { useState } from "react";
+import { SignInApi } from "../../services/auth";
+import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 const Login = () => {
+  const [loading, setLoading] = useState(false);
+  const {setUser} = useAuth();
   const initialState = {
     email: "",
     password: "",
@@ -17,8 +23,19 @@ const Login = () => {
     formState: { errors },
   } = useFormValidate(initialState, loginSchema);
   const navigate = useNavigate();
-  const onSubmit = (data) => {
-    if (data) return navigate("/dashboard");
+  const onSubmit = async (data) => {
+    setLoading(true);
+     try {
+       const res = await SignInApi(data);
+       setUser(res);
+       toast.success("User Login Successfully");
+       return navigate("/dashboard");
+     } catch (error) {
+       toast.error(error?.message)
+       }
+       finally{
+        setLoading(false)
+       }
   };
   return (
     <AuthLayout
