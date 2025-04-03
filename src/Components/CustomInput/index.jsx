@@ -15,21 +15,35 @@ const CustomInput = ({
   const togglePassword = () => {
     return setShow((currentState) => !currentState);
   };
+
+  // Check if the input type should be "textarea"
+  const isTextArea = type === "textarea";
+
   return (
-    <div className=" space-y-2">
+    <div className="space-y-2">
       {label && <label htmlFor={name}>{label}</label>}
-      <div className=" relative">
-        <input
-          type={show && type === "password" ? "text" : type}
-          name={name}
-          placeholder={placeholder}
-          className={`w-full px-4 py-2 border rounded focus:outline-none ${className}`}
-          {...register(name, {
-            required: true,
-          })}
-        />
+      <div className="relative">
+        {isTextArea ? (
+          <textarea
+            name={name}
+            placeholder={placeholder}
+            className={`w-full px-4 py-2 border rounded focus:outline-none ${className}`}
+            {...register(name, { required: true })}
+          />
+        ) : (
+          <input
+            type={show && type === "password" ? "text" : type}
+            name={name}
+            placeholder={placeholder}
+            className={`w-full px-4 py-2 border rounded focus:outline-none ${className}`}
+            {...register(name, { required: true })}
+          />
+        )}
         {type === "password" && (
-          <div className=" absolute top-1/2 right-2 -translate-y-1/2" onClick={togglePassword}> 
+          <div
+            className="absolute top-1/2 right-2 -translate-y-1/2"
+            onClick={togglePassword}
+          >
             {show ? <FaRegEye /> : <FaRegEyeSlash />}
           </div>
         )}
