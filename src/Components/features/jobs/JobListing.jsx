@@ -1,10 +1,10 @@
 import JobTitle from "./JobTitle";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import Job from "./Job";
-import { jobListings } from "../../constant/job";
 import { Link } from "react-router";
 import { useEffect, useState } from "react";
-import { supabase } from "../../libs/supabase";
+import { supabase } from "../../../libs/supabase";
+
 
 
 const JobListings = ({ title = "Recent Jobs", ShowAllJobsBtn = true }) => {

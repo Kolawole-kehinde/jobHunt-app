@@ -30,6 +30,7 @@ const App = () => {
           <Route path="dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
+    
     </>
   );
 };

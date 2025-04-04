@@ -1,7 +1,8 @@
 
-import JobListings from '../../Components/jobs/JobListing'
+
 import TopBanner from '../../Components/TopBanner'
 import ShowcaseSearch from '../../Components/ShowcaseSearch'
+import JobListings from '../../Components/features/jobs/JobListing'
 
 const AllJobsPage = () => {
   return (

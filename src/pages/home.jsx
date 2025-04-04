@@ -1,7 +1,7 @@
 import React from 'react'
 import ShowCase from '../Components/ShowCase'
 import TopBanner from '../Components/TopBanner'
-import JobListing from '../Components/jobs/JobListing'
+import JobListing from '../Components/features/jobs/JobListing'
 import ButtomBanner from '../Components/ButtomBanner'
 
 
