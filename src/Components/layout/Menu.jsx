@@ -27,7 +27,7 @@ const Menu = ({ menuStyle, toggleMenu }) => {
           </li>
         ))
       )}
-     
+    
     </menu>
   );
 };

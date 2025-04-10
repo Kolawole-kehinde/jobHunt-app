@@ -1,61 +1,72 @@
-import { Link, useNavigate, useParams } from "react-router";
-import { HiArrowCircleLeft } from "react-icons/hi";
-import { jobListings } from "../../constant/job";
+import { useNavigate } from "react-router";
+import { FaArrowAltCircleLeft } from "react-icons/fa";
+import JobDetail from "../../Components/features/jobs/jobDetail";
+import JobTitle from "../../Components/features/jobs/JobTitle";
+import useJobs from "../../Components/features/jobs/create/hooks/useJobs";
+import { useAuth } from "../../hooks/useAuth";
 
-const JobDetailsPage = () => {
-  const { id } = useParams(); // Grab the dynamic "id" from the URL params
+// const Skeleton = () => (
+//   <div className="animate-pulse p-4 bg-gray-200 rounded-lg shadow-md">
+//     <div className="h-6 bg-gray-300 rounded w-1/2 mb-2"></div>
+//     <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+//     <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+//   </div>
+// );
+
+const JobDetails = () => {
   const navigate = useNavigate();
-  const job = jobListings.find((job) => job.id === id);
-//   console.log(job)
+  const { user } = useAuth();
+  const { data, status, error } = useJobs();
+
+  // if (status === "pending") {
+  //   return (
+  //     <section className="container mx-auto p-4 mt-4">
+  //       <Skeleton />
+  //       <Skeleton />
+  //       <Skeleton />
+  //       <Skeleton />
+  //     </section>
+  //   );
+  // }
+
+  if (status === "error") {
+    return <p>{error.message}</p>;
+  }
 
   return (
-    <>
+    <div>
       <section className="container mx-auto p-4 mt-4">
         <div className="rounded-lg shadow-md bg-white p-3">
           <div className="flex justify-between items-center">
-            <button className="flex items-center gap-2 p-4 text-blue-700" onClick={() => navigate(-1)}>
-            <HiArrowCircleLeft fontSize={20} />
-              Back
+            <button
+              className="p-4 text-blue-700 flex items-center gap-2"
+              onClick={() => navigate(-1)}
+            >
+              <FaArrowAltCircleLeft /> Back
             </button>
-            <div className="flex space-x-4 ml-4">
-              <Link
-                to="/edit"
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
-              >
-                Edit
-              </Link>
-              {/* Delete Form */}
-              <form method="POST" action={`/delete-job/${id}`}>
-                <button
-                  type="submit"
-                  className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+            {user?.id === data?.user_id && (
+              <div className="flex space-x-4 ml-4">
+                <a
+                  href="/edit"
+                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
                 >
-                  Delete
-                </button>
-              </form>
-              {/* End Delete Form */}
-            </div>
+                  Edit
+                </a>
+                <form method="POST">
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+                  >
+                    Delete
+                  </button>
+                </form>
+              </div>
+            )}
           </div>
           <div className="p-4">
-            <h2 className="text-xl font-semibold">{job.title}</h2>
-            <p className="text-gray-700 text-lg mt-2">
-              {job.description}
-            </p>
-            <ul className="my-4 bg-gray-100 p-4">
-              <li className="mb-2">
-                <strong>Salary:</strong> ${job.salary}
-              </li>
-              <li className="mb-2">
-                <strong>Location:</strong> {`${job.city} ${job.state}`}
-                <span className="text-xs bg-blue-500 text-white rounded-full px-2 py-1 ml-2">
-                  Local
-                </span>
-              </li>
-              <li className="mb-2">
-                <strong>Tags:</strong> <span>Development</span>{job.tags.join(" , ")}
-                <span>Coding</span>
-              </li>
-            </ul>
+            <JobTitle>{data?.title}</JobTitle>
+            <p className="text-gray-700 text-lg mt-2">{data?.description}</p>
+            <JobDetail {...data} />
           </div>
         </div>
       </section>
@@ -66,25 +77,22 @@ const JobDetailsPage = () => {
           <h3 className="text-lg font-semibold mb-2 text-blue-500">
             Job Requirements
           </h3>
-          <p>
-            {job.requirements}
-          </p>
+          <p>{data?.requirements}</p>
           <h3 className="text-lg font-semibold mt-4 mb-2 text-blue-500">
             Benefits
           </h3>
-            {job.benefits}
+          <p>{data?.benefits}</p>
         </div>
         <p className="my-5">
-          Put "Job Application" as the subject of your email and attach your
-          resume.
+          Put &quot;Job Application&quot; as the subject of your email and
+          attach your resume.
         </p>
-        <button
-          className="block w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+        <button className="block w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
           Apply Now
         </button>
       </section>
-    </>
+    </div>
   );
 };
 
-export default JobDetailsPage;
+export default JobDetails;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const JobDetails = ({ salary, city, state, tags }) => {
+const JobDetail = ({ salary, city, state, tags }) => {
   return (
     <div>
       <ul className="my-4 bg-gray-100 p-4 rounded">
@@ -21,4 +21,4 @@ const JobDetails = ({ salary, city, state, tags }) => {
   );
 };
 
-export default JobDetails;
+export default JobDetail;

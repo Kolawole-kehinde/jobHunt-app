@@ -3,6 +3,7 @@ import ShowCase from '../Components/ShowCase'
 import TopBanner from '../Components/TopBanner'
 import JobListing from '../Components/features/jobs/JobListing'
 import ButtomBanner from '../Components/ButtomBanner'
+import useJobs from '../Components/features/jobs/create/hooks/useJobs'
 
 
 
@@ -10,11 +11,12 @@ import ButtomBanner from '../Components/ButtomBanner'
 
 
 const HomePage = () => {
+  const query = useJobs();
   return (
     <div>
       <ShowCase/>
       <TopBanner/>
-      <JobListing/>
+      <JobListing status={query?.status} job={query?.data} error={query?.error}/>
       <ButtomBanner/>
  
     </div>
