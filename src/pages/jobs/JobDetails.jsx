@@ -2,32 +2,32 @@ import { useNavigate } from "react-router";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import JobDetail from "../../Components/features/jobs/jobDetail";
 import JobTitle from "../../Components/features/jobs/JobTitle";
-import useJobs from "../../Components/features/jobs/create/hooks/useJobs";
+import useJobs from "../../Components/features/hooks/useJobs";
 import { useAuth } from "../../hooks/useAuth";
 
-// const Skeleton = () => (
-//   <div className="animate-pulse p-4 bg-gray-200 rounded-lg shadow-md">
-//     <div className="h-6 bg-gray-300 rounded w-1/2 mb-2"></div>
-//     <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
-//     <div className="h-4 bg-gray-300 rounded w-3/4"></div>
-//   </div>
-// );
+const Skeleton = () => (
+  <div className="animate-pulse p-4 bg-gray-200 rounded-lg shadow-md">
+    <div className="h-6 bg-gray-300 rounded w-1/2 mb-2"></div>
+    <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+    <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+  </div>
+);
 
 const JobDetails = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data, status, error } = useJobs();
 
-  // if (status === "pending") {
-  //   return (
-  //     <section className="container mx-auto p-4 mt-4">
-  //       <Skeleton />
-  //       <Skeleton />
-  //       <Skeleton />
-  //       <Skeleton />
-  //     </section>
-  //   );
-  // }
+  if (status === "pending") {
+    return (
+      <section className="container mx-auto p-4 mt-4">
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+        <Skeleton />
+      </section>
+    );
+  }
 
   if (status === "error") {
     return <p>{error.message}</p>;

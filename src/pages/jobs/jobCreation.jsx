@@ -2,7 +2,7 @@
 import React from "react";
 import { companyInfoFields, jobInfoFields } from "../../constant/jobInputLists";
 import CustomInput from "../../components/CustomInput";
-import useCreateJob from "../../Components/features/jobs/create/hooks/useCreateJob";
+import useCreateJob from "../../Components/features/hooks/useCreateJob";
 import JobTitle from "../../Components/features/jobs/JobTitle";
 
 const JobCreation = () => {

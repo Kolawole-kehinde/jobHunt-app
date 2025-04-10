@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { jobSchema } from "../../../../../Schema/jobSchema";
+import { jobSchema } from "../../../Schema/jobSchema";
 import { useMutation } from "@tanstack/react-query";
-import { jobCcreationApi } from "../../../../../services/jobApi";
+import { jobCcreationApi } from "../../../services/jobApi";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 
