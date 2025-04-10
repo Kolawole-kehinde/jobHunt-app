@@ -21,6 +21,8 @@ const useCreateJob = () => {
     state: "",
     phone: "",
     email: "",
+    tags: "",
+    company_website: "",
   };
 
   const {

@@ -4,10 +4,12 @@ export const jobInfoFields = [
   { name: 'salary', placeholder: 'Annual Salary', label: 'Salary', type: 'text' },
   { name: 'requirements', placeholder: 'Requirements', label: 'Requirements', type: 'text' },
   { name: 'benefits', placeholder: 'Benefits', label: 'Benefits', type: 'text' },
+  { name: 'tags', placeholder: 'Add tags seperate with commas',type: 'text' },
 ];
 
 export const companyInfoFields = [
-  { name: 'company', placeholder: 'Company Name', label: 'Company Name', type: 'text' },
+  { name: 'company', placeholder: 'Company Name', type: 'text' },
+  { name: 'company_website', placeholder: 'Enter Company Website', type: 'text' },
   { name: 'address', placeholder: 'Address', label: 'Address', type: 'text' },
   { name: 'city', placeholder: 'City', label: 'City', type: 'text' },
   { name: 'state', placeholder: 'State', label: 'State', type: 'text' },
