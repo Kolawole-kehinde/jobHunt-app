@@ -45,6 +45,11 @@ const JobCreation = () => {
             />
           ))}
 
+            <div>
+            <label htmlFor="images">Upload company logo</label>
+            <input type="file" name="company_logo"/>
+            </div>
+
           <button
             disabled={isPending}
             type="submit"
