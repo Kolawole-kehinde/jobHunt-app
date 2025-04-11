@@ -1,11 +1,19 @@
 import JobTitle from "./JobTitle";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import Job from "./Job";
-import { Link } from "react-router";
 import { JobSkeletonLoader } from "../../JobSkeletonLoader";
+import { Link } from "react-router";
 
+const JobListings = ({
+  title = "Recent Jobs",
+  ShowAllJobsBtn = true,
+  status,
+  jobs,
+  error,
+  limit = 6, // ✅ Default limit to 6
+}) => {
+  const displayedJobs = limit ? jobs?.slice(0, limit) : jobs;
 
-const JobListings = ({ title = "Recent Jobs", ShowAllJobsBtn = true, status, jobs, error }) => {
   return (
     <section>
       <div className="container mx-auto p-4 mt-4">
@@ -19,9 +27,9 @@ const JobListings = ({ title = "Recent Jobs", ShowAllJobsBtn = true, status, job
 
         {status === "loading" && <JobSkeletonLoader />}
 
-        {jobs?.length > 0 && (
+        {displayedJobs?.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-4 mb-6">
-            {jobs?.map((job) => (
+            {displayedJobs.map((job) => (
               <Job key={job.id} {...job} />
             ))}
           </div>

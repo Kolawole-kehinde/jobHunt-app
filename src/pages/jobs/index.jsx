@@ -15,8 +15,9 @@ const AllJobsPage = () => {
         title="All Jobs"
         ShowAllJobsBtn={false}
         status={query?.status}
-        job={query?.data}
+        jobs={query?.data}
         error={query?.error}
+        limit={null} // ✅ Show all jobs
       />
     </>
   );

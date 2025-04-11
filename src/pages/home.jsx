@@ -16,7 +16,7 @@ const HomePage = () => {
     <div>
       <ShowCase/>
       <TopBanner/>
-      <JobListing status={query?.status} jobs={query?.data} error={query?.error}/>
+      <JobListing status={query?.status} jobs={query?.data} error={query?.error} limit={6}/>
       <ButtomBanner/>
  
     </div>
