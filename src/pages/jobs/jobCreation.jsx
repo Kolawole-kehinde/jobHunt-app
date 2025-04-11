@@ -1,12 +1,21 @@
-
 import React from "react";
 import { companyInfoFields, jobInfoFields } from "../../constant/jobInputLists";
-import CustomInput from "../../components/CustomInput";
-import useCreateJob from "../../Components/features/hooks/useCreateJob";
 import JobTitle from "../../Components/features/jobs/JobTitle";
+import { FaCamera } from "react-icons/fa";
+import useCreateJob from "../../Components/features/hooks/useCreateJob";
+import CustomInput from "../../components/CustomInput";
+import ImageUploadAndPreview from "../../Components/CustomInput/ImageUploadAndPreview";
 
 const JobCreation = () => {
-  const { register, handleSubmit, errors, onSubmit, isPending } = useCreateJob();
+  const {
+    register,
+    handleSubmit,
+    errors,
+    onSubmit,
+    isPending,
+    handleImageChange,
+    imagePreview,
+  } = useCreateJob();
 
   return (
     <section className="flex justify-center items-center mt-20">
@@ -44,11 +53,9 @@ const JobCreation = () => {
               error={errors[name]?.message}
             />
           ))}
-
-            <div>
-            <label htmlFor="images">Upload company logo</label>
-            <input type="file" name="company_logo"/>
-            </div>
+           
+          {/* Image Upload Section */}
+          <ImageUploadAndPreview handleImageChange={handleImageChange} imagePreview={imagePreview}/>
 
           <button
             disabled={isPending}
