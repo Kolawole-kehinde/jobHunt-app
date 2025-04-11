@@ -1,19 +1,21 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
 import { jobSchema } from "../../../Schema/jobSchema";
 import { useMutation } from "@tanstack/react-query";
 import { jobCcreationApi } from "../../../services/jobApi";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { use, useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
+import { uploadImageToCloudinary } from "../../../services/uploadImageToCloudinary";
+import { useNavigate } from "react-router";
+
 
 
 const useCreateJob = () => {
-  const [image, setImage] = useState([]); // State to store the image file
-  const [imagePreview, setImagePreview] = useState([]); // State to store the image preview URL
+  const [image, setImage] = useState(null); // Initialize as null for clarity
+  const [imagePreview, setImagePreview] = useState(""); // Empty string for initial preview
 
-  const {user} = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
   const defaultValues = {
     title: "",
@@ -31,7 +33,6 @@ const useCreateJob = () => {
     company_website: "",
   };
 
-
   // Function to handle image preview upload
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -41,14 +42,9 @@ const useCreateJob = () => {
     }
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
     resolver: zodResolver(jobSchema),
-    defaultValues, // Set default values
+    defaultValues,
   });
 
   const { isPending, mutate } = useMutation({
@@ -65,14 +61,31 @@ const useCreateJob = () => {
   });
 
   const onSubmit = async (data) => {
-    const res = await uploadImageToCloudinary(image); // Assuming you have a function to upload the image to Cloudinary
-     console.log(res)
-    mutate({
-      ...data,
-       user_id:  user?.id,
-       company_logo: image, // Add the image URL to the data
-    })
-    reset();
+    try {
+      // Ensure the image is valid before uploading
+      if (!image) {
+        toast.error("Please select an image");
+        return;
+      }
+
+      const response = await uploadImageToCloudinary(image);
+
+      if (!response) {  // Check if response is null or undefined
+        toast.error("Image upload failed");
+        return;
+      }
+
+      mutate({
+        ...data,
+        user_id: user?.id,
+        company_logo: response,  // Use the image URL directly
+      });
+
+      reset();  // Reset form after submission
+    } catch (error) {
+      console.error("Error uploading image or submitting job:", error);
+      toast.error("Something went wrong during submission");
+    }
   };
 
   return {
@@ -80,7 +93,7 @@ const useCreateJob = () => {
     handleSubmit,
     errors,
     onSubmit,
-    isPending ,
+    isPending,
     handleImageChange,
     image,
     imagePreview,
@@ -88,3 +101,4 @@ const useCreateJob = () => {
 };
 
 export default useCreateJob;
+
