@@ -1,10 +1,15 @@
 import { Link } from "react-router";
 import JobDetails from "./jobDetail";
+import JobTitle from "./JobTitle";
 
 const Job = (props) => {
-    const { title, description, salary, city, state, tags, id } = props;
+    const { title, description, salary, city, state, tags, id, company_logo, company } = props;
     return (
       <div className="rounded-lg shadow-md bg-white">
+        <div className="px-4">
+            {company_logo && <img src={company_logo} alt="Company Logo" className="size-20" />}
+            <JobTitle className="text-blue-500 capitalize text-xl">{company}</JobTitle>
+        </div>
         <div className="p-4">
           <h2 className="text-xl font-semibold">{title}</h2>
           <p className="text-gray-700 text-lg mt-2">{description}</p>

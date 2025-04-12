@@ -17,6 +17,13 @@ const JobListings = ({
   return (
     <section>
       <div className="container mx-auto p-4 mt-4">
+         
+         <div>
+
+          
+         </div>
+
+          
         <JobTitle>{title}</JobTitle>
 
         {status === "error" && (
