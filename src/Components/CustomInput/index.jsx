@@ -35,7 +35,7 @@ const CustomInput = ({
             type={show && type === "password" ? "text" : type}
             name={name}
             placeholder={placeholder}
-            className={`w-full px-4 py-2 border rounded focus:outline-none ${className}`}
+            className={`w-full px-4 py-2 text-black border rounded focus:outline-none ${className}`}
             {...register(name, { required: true })}
           />
         )}
