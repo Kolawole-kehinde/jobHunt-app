@@ -2,8 +2,8 @@ import { useNavigate } from "react-router";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import JobDetail from "../../Components/features/jobs/jobDetail";
 import JobTitle from "../../Components/features/jobs/JobTitle";
-import useJobs from "../../Components/features/hooks/useJobs";
 import { useAuth } from "../../hooks/useAuth";
+import useJobs from "../../Components/features/hooks/useJobs";
 
 const Skeleton = () => (
   <div className="animate-pulse p-4 bg-gray-200 rounded-lg shadow-md">
