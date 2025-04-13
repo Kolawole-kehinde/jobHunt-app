@@ -14,7 +14,7 @@ const ImageUploadAndPreview = ({imagePreview, handleImageChange, heading = "Uplo
                       hidden
                     />
                     {imagePreview.length > 0 ? (
-                      <img src={imagePreview} alt="logo" className="" />
+                      <img src={imagePreview} alt="logo" className="object-cover" />
                     ) : (
                       <FaCamera fontSize={30} className='text-blue-900'/>
                     )}

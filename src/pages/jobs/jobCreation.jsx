@@ -1,10 +1,9 @@
 import React from "react";
 import { companyInfoFields, jobInfoFields } from "../../constant/jobInputLists";
 import JobTitle from "../../Components/features/jobs/JobTitle";
-import { FaCamera } from "react-icons/fa";
 import useCreateJob from "../../Components/features/hooks/useCreateJob";
-import CustomInput from "../../components/CustomInput";
 import ImageUploadAndPreview from "../../Components/CustomInput/ImageUploadAndPreview";
+import CustomInput from "../../Components/CustomInput";
 
 const JobCreation = () => {
   const {

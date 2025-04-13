@@ -1,18 +1,24 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
-import { profileSchema } from "../../../Schema/authSchema";
 import CustomInput from "../../CustomInput";
 import CustomButton from "../../CustomBotton";
 import ImageUploadAndPreview from "../../CustomInput/ImageUploadAndPreview";
 import useFormValidate from "../../../hooks/useFormValidate";
+import useUpdateProfile from "../hooks/useUpdateProfile";
+import { profileSchema } from "../../../Schema/authSchema";
 
 
 const ProfileInfo = () => {
   const { user } = useAuth();
+  const { handleImageChange, imagePreview, updateProfile } = useUpdateProfile();
+
   const initialState = {
-    email: "",
-    name: "",
+    email: user?.email || "",
+    name: user?.fullName || "",
+    profilePicture: user?.profilePicture || "",
   };
+
+  // Use custom form validation hook
   const {
     register,
     handleSubmit,
@@ -24,20 +30,27 @@ const ProfileInfo = () => {
     if (user) {
       setValue("email", user?.email);
       setValue("name", user?.fullName);
+      setValue("profilePicture", user?.profilePicture);
     }
   }, [user, setValue]);
+
+  // Handle the form submission
+  const onSubmit = (data) => {
+    updateProfile(data); // Call the updateProfile function to update Supabase
+  };
+
   return (
     <section className="bg-white shadow-md p-4 space-y-5 h-[500px] rounded-md shadow-blue-900">
       <h2 className="text-blue-900 text-2xl font-semibold">Profile Info</h2>
 
-      <form className="space-y-4 ">
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <CustomInput
           label={"Full Name"}
           name={"name"}
           placeholder={"Enter Full Name"}
           type={"text"}
           register={register}
-          error={errors[name]?.message}
+          error={errors.name?.message}
         />
         <CustomInput
           label={"Email"}
@@ -45,14 +58,17 @@ const ProfileInfo = () => {
           placeholder={"Enter Email"}
           type={"text"}
           register={register}
-          error={errors[name]?.message}
+          error={errors.email?.message}
         />
+
+        {/* Profile Picture Upload Section */}
         <ImageUploadAndPreview
-         handleImageChange ={() => {}}
-         imagePreview ={""}
-          heading={"Upload Profile Picture"}
+          handleImageChange={handleImageChange}
+          imagePreview={imagePreview}
+          heading="Upload Profile Picture"
         />
-        <CustomButton>Update</CustomButton>
+
+        <CustomButton type="submit">Update</CustomButton>
       </form>
     </section>
   );
