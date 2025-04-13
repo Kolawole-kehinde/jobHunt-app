@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router";
 import CustomButton from '../../Components/CustomBotton'
-import CustomInput from "../../components/CustomInput";
 import AuthLayout from '../../Components/layout/AuthLayout'
 import useFormValidate from "../../hooks/useFormValidate";
 import { loginInputs } from "../../constant/auth";
@@ -9,6 +8,7 @@ import { useState } from "react";
 import { SignInApi } from "../../services/auth";
 import { useAuth } from "../../hooks/useAuth";
 import toast from "react-hot-toast";
+import CustomInput from "../../Components/CustomInput";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);

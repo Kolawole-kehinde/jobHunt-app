@@ -1,14 +1,16 @@
 import React from 'react'
 import { useAuth } from '../../hooks/useAuth';
+import ProfileInfo from '../../Components/features/dashboard/ProfileInfo';
+import JobTitle from '../../Components/features/jobs/JobTitle';
 
 function Dashboard() {
   const { user } = useAuth();
   return (
-    <div className='w-full bg-slate-100 h-screen container mx-auto grid lg:grid-cols-2gap-6'>
-       <section className='bg-white shadow-lg rounded-lg p-4'>
-          <h2 className='text-blue-900 text-2xl font-semibold'>Profile Info</h2>
+    <div className='bg-slate-100 w-full h-screen grid lg:grid-cols-2 gap-6 p-10'>
+       <ProfileInfo/>
+       <section>
+          <JobTitle>Job Listing</JobTitle>
        </section>
-       <section></section>
     </div>
   )
 }

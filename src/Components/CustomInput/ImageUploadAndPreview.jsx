@@ -1,11 +1,11 @@
 import React from 'react'
 import { FaCamera } from 'react-icons/fa'
 
-const ImageUploadAndPreview = ({imagePreview, handleImageChange}) => {
+const ImageUploadAndPreview = ({imagePreview, handleImageChange, heading = "Upload Company Logo",}) => {
   return (
     <div className='space-y-4'>
-        <label htmlFor="company_logo" className=" border border-gray-500 w-[200px] flex items-center justify-center flex-col gap-4 p-3 rounded-lg cursor-pointer">
-                    <span >Upload company logo</span>
+        <label htmlFor="company_logo" className=" border-2 border-blue-500 w-[200px] h-[100px] flex items-center justify-center flex-col gap-4 p-3 rounded-lg cursor-pointer">
+                    <span >{heading}</span>
                     <input
                       type="file"
                       name="company_logo"
@@ -16,7 +16,7 @@ const ImageUploadAndPreview = ({imagePreview, handleImageChange}) => {
                     {imagePreview.length > 0 ? (
                       <img src={imagePreview} alt="logo" className="" />
                     ) : (
-                      <FaCamera fontSize={30}/>
+                      <FaCamera fontSize={30} className='text-blue-900'/>
                     )}
                   </label>
     </div>
