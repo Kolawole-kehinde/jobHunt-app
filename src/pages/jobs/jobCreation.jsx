@@ -19,8 +19,8 @@ const JobCreation = () => {
   } = useCreateJob();
 
   return (
-    <section className="flex justify-center items-center mt-20">
-      <div className="bg-white p-8 rounded-lg w-full md:w-600 mx-6">
+    <section className="flex justify-center items-center mt-20 px-4 lg:px-0 ">
+      <div className="bg-white p-4 lg:p-8 rounded-lg shadow-md w-full md:w-600 lg:mx-6">
         <JobTitle className="text-4xl text-center font-bold mb-6">
           Create Job Listing
         </JobTitle>

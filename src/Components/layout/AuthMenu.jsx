@@ -8,6 +8,16 @@ const AuthMenu = ({ menuStyle, toggleMenu }) => {
   return (
     <menu className={menuStyle}>
       <li>
+        <Link to="/" onClick={toggleMenu}>
+          Home
+        </Link>
+      </li>
+      <li>
+        <Link to="/jobs" onClick={toggleMenu}>
+          All Jobs
+        </Link>
+      </li>
+      <li>
         <Link to="/dashboard" onClick={toggleMenu}>
           Dashboard
         </Link>
