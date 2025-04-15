@@ -31,6 +31,8 @@ const useCreateJob = () => {
     email: "",
     tags: "",
     company_website: "",
+    job_type: "",
+    work_mode: "",
   };
 
   // Function to handle image preview upload

@@ -11,7 +11,7 @@ export const jobFormFields = [
       { name: "benefits", placeholder: "Benefits", label: "Benefits", type: "textarea" },
       { name: "tags", placeholder: "Add tags, separated by commas", label: "Tags", type: "text" },
       {
-        name: "employment_type",
+        name: "job_type",
         placeholder: "Select Employment Type",
         label: "Employment Type",
         type: "select",

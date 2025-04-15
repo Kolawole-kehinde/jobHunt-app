@@ -5,7 +5,7 @@ const CustomInput = ({
   type = "text",
   placeholder,
   label,
-  register,
+  register = () => {},
   error,
   options = [], // For select inputs
 }) => {
