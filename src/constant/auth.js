@@ -9,7 +9,11 @@ export const registerInputs = [
     placeholder: "Email Address",
     type: "email",
   },
- 
+  {
+    name: "phoneNumber",
+    placeholder: "Phone Number",
+    type: "text",
+  },
   {
     name: "password",
     placeholder: "Password",
@@ -21,6 +25,7 @@ export const registerInputs = [
     type: "password",
   },
 ];
+
 
 export const loginInputs = [
   {

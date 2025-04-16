@@ -1,5 +1,4 @@
 import CustomButton from "../../Components/CustomBotton";
-import CustomInput from "../../components/CustomInput";
 import AuthLayout from "../../Components/layout/AuthLayout";
 import useFormValidate from "../../hooks/useFormValidate";
 import { useNavigate } from "react-router";
@@ -9,6 +8,7 @@ import { registerSchema } from "../../Schema/authSchema";
 import { useAuth } from "../../hooks/useAuth";
 import { signUpApi } from "../../services/auth";
 import toast from "react-hot-toast";
+import CustomInput from "../../Components/CustomInput";
 
 const Register = () => {
   const { setUser } = useAuth();
@@ -16,10 +16,9 @@ const Register = () => {
   const initialState = {
     name: "",
     email: "",
-    city: "",
+    phoneNumber: "",
     password: "",
     passwordConfirmation: "",
-    state: "",
   };
   const {
     register,
@@ -33,6 +32,7 @@ const Register = () => {
     const payload = {
       fullName: data.name,
       email: data.email,
+      phoneNumber: data.phoneNumber,
       password: data.password,
     };
     setLoading(true);

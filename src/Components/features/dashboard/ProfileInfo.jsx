@@ -27,14 +27,15 @@ const ProfileInfo = () => {
     formState: { errors },
   } = useFormValidate(initialState, profileSchema);
 
+  // Set initial form values only once when component mounts
   useEffect(() => {
     if (user) {
-      setValue("email", user?.email);
-      setValue("name", user?.fullName);
-      setValue("phoneNumber", user?.phoneNumber || "");
-      setValue("profilePicture", user?.profilePicture);
+      setValue("email", user.email);
+      setValue("name", user.fullName);
+      setValue("phoneNumber", user.phoneNumber || "");
+      setValue("profilePicture", user.profilePicture);
     }
-  }, [user, setValue]);
+  }, []); // <-- important: empty dependency array!
 
   const onSubmit = async (data) => {
     try {
@@ -54,27 +55,25 @@ const ProfileInfo = () => {
           className="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover"
         />
         <div className="flex flex-col gap-5">
-        <div>
-          <h2 className="font-semibold text-lg md:text-xl">{user?.fullName}</h2>
-          <p className="text-sm text-gray-700">{user?.email}</p>
-        </div>
-
-        {/* Just Change Picture Button */}
-        <div className="">
-          <label
-            htmlFor="profilePicUpload"
-            className="cursor-pointer bg-blue-400 hover:bg-blue-500 text-white py-2 px-4 rounded"
-          >
-            Change picture
-          </label>
-          <input
-            id="profilePicUpload"
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="hidden"
-          />
-        </div>
+          <div>
+            <h2 className="font-semibold text-lg md:text-xl">{user?.fullName}</h2>
+            <p className="text-sm text-gray-700">{user?.email}</p>
+          </div>
+          <div className="">
+            <label
+              htmlFor="profilePicUpload"
+              className="cursor-pointer bg-blue-400 hover:bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              Change picture
+            </label>
+            <input
+              id="profilePicUpload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="hidden"
+            />
+          </div>
         </div>
       </div>
 
@@ -143,10 +142,7 @@ const ProfileInfo = () => {
 
         {/* Save Button */}
         <div className="md:col-span-2 flex justify-end">
-          <CustomButton
-            type="submit"
-            
-          >
+          <CustomButton type="submit">
             Save Changes
           </CustomButton>
         </div>
