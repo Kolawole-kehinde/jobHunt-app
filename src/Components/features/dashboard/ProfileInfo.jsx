@@ -45,7 +45,7 @@ const ProfileInfo = () => {
   };
 
   return (
-    <section className="bg-white shadow-md p-4 space-y-5 h-[550px] rounded-md shadow-blue-900">
+    <section className="bg-white shadow-md p-4 space-y-5 h-[500px] rounded-md shadow-blue-900">
       {/* Top Section */}
       <div className="flex items-center gap-4 mb-6">
         <img

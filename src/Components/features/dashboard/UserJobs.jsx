@@ -3,38 +3,40 @@ import { useAuth } from "../../../hooks/useAuth";
 import { Link } from "react-router";
 import { supabase } from "../../../libs/supabase";
 import CustomButton from "../../CustomBotton";
+import useDeleteJob from "../hooks/useDeleteJob";
 
 const UserJobs = () => {
   const { user } = useAuth();
-//   const {
-//     data: jobs,
-//     status,
-//     isLoading,
-//     isError,
-//   } = useQuery({
-//     queryKey: ["userJobs", user?.id ?? ""],
-//     queryFn: async () => {
-//       const { data, error } = await supabase
-//         .from("jobs")
-//         .select("*")
-//         .eq("user_id", user?.id);
+  const { isPending, mutate } = useDeleteJob();
+  const {
+    data: jobs,
+    status,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["userJobs", user?.id ?? ""],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("jobs")
+        .select("*")
+        .eq("user_id", user?.id);
 
-//       if (error) {
-//         throw error;
-//       }
+      if (error) {
+        throw error;
+      }
 
-//       return data;
-//     },
-//     enabled: !!user?.id, // Prevent fetching if user is not ready
-//     staleTime: 60 * 1000,
-//   });
+      return data;
+    },
+    enabled: !!user?.id, // Prevent fetching if user is not ready
+    staleTime: 60 * 1000,
+  });
 
   return (
     <section className="bg-white shadow-md p-4 space-y-5 h-[500px] rounded-md shadow-blue-900">
       <h2 className="text-blue-900 text-2xl font-semibold">My Job Listings</h2>
 
-      {/* {isLoading && <p>Loading...</p>}
-      {isError && <p className="text-red-600">Error fetching jobs.</p>} */}
+      {isLoading && <p>Loading...</p>}
+      {isError && <p className="text-red-600">Error fetching jobs.</p>}
 
       {status === "success" && (
         <div className="space-y-4">
