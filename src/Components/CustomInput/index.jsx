@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const CustomInput = ({
   name,
@@ -9,6 +10,12 @@ const CustomInput = ({
   error,
   options = [], // For select inputs
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  
+  const togglePassword = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   const sharedStyles =
     "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none placeholder-gray-500 text-gray-700";
 
@@ -47,13 +54,23 @@ const CustomInput = ({
           ))}
         </select>
       ) : (
-        <input
-          id={name}
-          type={type}
-          {...register(name)}
-          placeholder={placeholder}
-          className={sharedStyles}
-        />
+        <div className="relative">
+          <input
+            id={name}
+            type={showPassword && type === "password" ? "text" : type}
+            {...register(name)}
+            placeholder={placeholder}
+            className={sharedStyles}
+          />
+          {type === "password" && (
+            <div
+              className="absolute top-1/2 right-2 -translate-y-1/2 cursor-pointer text-black"
+              onClick={togglePassword}
+            >
+              {showPassword ? <FaRegEye /> : <FaRegEyeSlash />}
+            </div>
+          )}
+        </div>
       )}
 
       {/* Display error message if there is one */}
