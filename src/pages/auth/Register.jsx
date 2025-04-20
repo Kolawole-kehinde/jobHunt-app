@@ -13,6 +13,7 @@ import CustomInput from "../../Components/CustomInput";
 const Register = () => {
   const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
+
   const initialState = {
     name: "",
     email: "",
@@ -20,6 +21,7 @@ const Register = () => {
     password: "",
     passwordConfirmation: "",
   };
+
   const {
     register,
     handleSubmit,
@@ -28,49 +30,53 @@ const Register = () => {
   } = useFormValidate(initialState, registerSchema);
 
   const navigate = useNavigate();
-  const onSubmit = async (data) => {
+
+  const onSubmit = async (formData) => {
     const payload = {
-      fullName: data.name,
-      email: data.email,
-      phoneNumber: data.phoneNumber,
-      password: data.password,
+      fullName: formData.name,
+      email: formData.email,
+      phoneNumber: formData.phoneNumber,
+      password: formData.password,
+
     };
+
     setLoading(true);
     try {
       const res = await signUpApi(payload);
-      console.log(res);
       setUser(res);
       reset();
-      toast.success("User Register Successfully");
+      toast.success("User registered successfully!");
       navigate("/dashboard");
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      toast.error(error.message || "Registration failed, please try again.");
     } finally {
       setLoading(false);
     }
-};
-
-
+  };
 
   return (
     <AuthLayout
-      title={"Register"}
-      text={" Already have an account?"}
-      subText={"Login"}
-      textLink={"/auth/login"}
+      title="Register"
+      text="Already have an account?"
+      subText="Login"
+      textLink="/auth/login"
     >
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         {registerInputs.map(({ name, placeholder, type }) => (
           <CustomInput
+            key={name}
             name={name}
             placeholder={placeholder}
             type={type}
-            key={name}
             register={register}
             error={errors[name]?.message}
           />
         ))}
-        <CustomButton>{loading ? "Loading" : "Register"}</CustomButton>
+
+        <CustomButton disabled={loading}>
+          {loading ? "Loading..." : "Register"}
+        </CustomButton>
       </form>
     </AuthLayout>
   );

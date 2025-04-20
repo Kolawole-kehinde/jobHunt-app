@@ -9,6 +9,7 @@ import Dashboard from "./pages/dashboard";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
 import JobCreation from "./pages/jobs/jobCreation";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
+import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="reset-password" element={<ResetPasswordPage />} />
           </Route>
 
           <Route index element={<HomePage />} />
