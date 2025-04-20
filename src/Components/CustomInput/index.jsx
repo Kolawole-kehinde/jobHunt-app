@@ -19,7 +19,7 @@ const CustomInput = ({
   };
 
   const sharedStyles =
-    "w-full px-4 py-2 border border-gray-300 rounded focus:outline-none placeholder-gray-500 text-gray-700";
+    "w-full px-4 py-2 border border-gray-300  focus:outline-none placeholder-gray-500 text-gray-700";
 
   return (
     <div className="flex flex-col space-y-1">

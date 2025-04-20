@@ -29,7 +29,7 @@ const SearchShowcase = ({ className }) => {
         />
       ))}
 
-      <CustomButton className=" md:w-auto  px-4 py-2 flex items-center gap-2 justify-center">
+      <CustomButton className=" md:w-auto  px-4 py-[9px] flex items-center gap-2 justify-center rounded-r-sm rounded-l-none">
         <FaSearch /> Search
       </CustomButton>
     </form>
