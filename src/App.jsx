@@ -8,6 +8,7 @@ import JobDetailsPage from "./pages/jobs/JobDetails";
 import Dashboard from "./pages/dashboard";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
 import JobCreation from "./pages/jobs/jobCreation";
+import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="auth"element={<ProtectedRoute />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
+            <Route path="forgot-password" element={<ForgotPasswordPage />} />
           </Route>
 
           <Route index element={<HomePage />} />

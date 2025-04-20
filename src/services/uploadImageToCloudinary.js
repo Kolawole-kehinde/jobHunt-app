@@ -1,3 +1,4 @@
+// utils/uploadImageToCloudinary.js
 import axios from "axios";
 
 export const uploadImageToCloudinary = async (file) => {
@@ -14,7 +15,6 @@ export const uploadImageToCloudinary = async (file) => {
       }
     );
 
-    console.log("Uploaded Image URL:", response.data.secure_url);
     return response.data.secure_url;
   } catch (error) {
     console.error("Upload failed:", error);

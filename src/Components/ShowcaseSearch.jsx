@@ -1,6 +1,7 @@
 import CustomButton from '../Components/CustomBotton'
 import { FaSearch } from "react-icons/fa";
-import CustomInput from "../components/CustomInput";
+import CustomInput from './CustomInput';
+
 
 
 const SearchShowcase = ({ className }) => {
