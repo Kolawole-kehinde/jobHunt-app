@@ -6,6 +6,8 @@ const CustomInput = ({
   type = "text",
   placeholder,
   label,
+  value,
+  onChange,
   register = () => {},
   error,
   options = [], // For select inputs
@@ -58,6 +60,9 @@ const CustomInput = ({
           <input
             id={name}
             type={showPassword && type === "password" ? "text" : type}
+            value={value}
+            onChange={onChange}
+            {...(type === "password" ? { autoComplete: "current-password" } : {})}
             {...register(name)}
             placeholder={placeholder}
             className={sharedStyles}

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { supabase } from '../../libs/supabase';
 import { useNavigate } from 'react-router';
+import CustomInput from '../../Components/CustomInput';
+import CustomButton from '../../Components/CustomBotton';
 
 const ResetPasswordPage = () => {
     const [password, setPassword] = useState('');
@@ -40,7 +42,7 @@ const ResetPasswordPage = () => {
     <div className="max-w-md mx-auto mt-20 p-6 bg-white shadow-lg rounded-lg space-y-4">
     <h2 className="text-xl font-semibold text-center">Reset Password</h2>
 
-    <input
+    <CustomInput
       type="password"
       placeholder="New Password"
       className="w-full p-2 border rounded"
@@ -48,7 +50,7 @@ const ResetPasswordPage = () => {
       onChange={(e) => setPassword(e.target.value)}
     />
 
-    <input
+    <CustomInput
       type="password"
       placeholder="Confirm Password"
       className="w-full p-2 border rounded"
@@ -56,13 +58,13 @@ const ResetPasswordPage = () => {
       onChange={(e) => setConfirmPassword(e.target.value)}
     />
 
-    <button
+    <CustomButton
     onClick={handlePaswwordReset}
     disabled={loading}
       className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
     >
         {loading ? 'Loading...' : 'Reset Password'}
-    </button>
+    </CustomButton>
   </div>
   )
 }
