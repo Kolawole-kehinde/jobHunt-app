@@ -42,7 +42,6 @@ export const signUpApi = async (payload) => {
 
 
 
-// SignIn API
 export const SignInApi = async (payload) => {
     const { email, password } = payload;
   
@@ -55,15 +54,20 @@ export const SignInApi = async (payload) => {
     if (error) throw new Error(error.message);
   
     if (data?.user) {
-      // Fetch user data from your custom users table
+      // Fetch user data from your custom users table using `id`
       const { data: userData, error: userError } = await supabase
-  .from("users")
-  .select()
-  .eq("id", data.user.id) // use ID instead of email to avoid duplication errors
-  .single();
+        .from("users")
+        .select()
+        .eq("user_id", data.user.id)  // using id to fetch user, assuming it's unique
+        .single();  // Ensure only one row is returned
   
       if (userError) throw new Error(userError.message);
+  
+      // Debug: log the result to check the returned data
+      console.log('User Data:', userData);  // Check how many rows are being returned
+  
       return userData;
     }
   };
+  
   
