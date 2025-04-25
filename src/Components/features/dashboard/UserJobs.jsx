@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "../../../hooks/useAuth";
-import { Link } from "react-router";
 import { supabase } from "../../../libs/supabase";
 import CustomButton from "../../CustomBotton";
 import useDeleteJob from "../hooks/useDeleteJob";
+import { Link } from "react-router";
 
 const UserJobs = () => {
   const { user } = useAuth();
