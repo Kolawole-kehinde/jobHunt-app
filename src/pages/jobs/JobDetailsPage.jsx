@@ -6,22 +6,21 @@ import { useAuth } from "../../hooks/useAuth";
 import useJobs from "../../Components/features/hooks/useJobs";
 
 const Skeleton = () => (
-  <div className="animate-pulse p-4 bg-gray-200 rounded-lg shadow-md">
-    <div className="h-6 bg-gray-300 rounded w-1/2 mb-2"></div>
-    <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
-    <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+  <div className="animate-pulse p-6 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 rounded-xl shadow-lg mb-6">
+    <div className="h-7 bg-gray-300 rounded w-1/2 mb-4"></div>
+    <div className="h-5 bg-gray-300 rounded w-full mb-3"></div>
+    <div className="h-5 bg-gray-300 rounded w-3/4"></div>
   </div>
 );
 
-const JobDetailsPage = () => {
+const JobDetails = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data, status, error } = useJobs();
 
   if (status === "pending") {
     return (
-      <section className="container mx-auto p-4 mt-4">
-        <Skeleton />
+      <section className="container mx-auto p-6 mt-6">
         <Skeleton />
         <Skeleton />
         <Skeleton />
@@ -30,32 +29,38 @@ const JobDetailsPage = () => {
   }
 
   if (status === "error") {
-    return <p>{error.message}</p>;
+    return (
+      <section className="container mx-auto p-6 mt-6 text-center text-red-600 font-semibold">
+        <p>Error: {error.message}</p>
+      </section>
+    );
   }
 
   return (
-    <div>
-      <section className="container mx-auto p-4 mt-4">
-        <div className="rounded-lg shadow-md bg-white p-3">
-          <div className="flex justify-between items-center">
+    <div className="bg-gray-50 min-h-screen py-8">
+      <section className="container mx-auto p-6 max-w-4xl">
+
+        <div className="rounded-xl shadow-xl bg-white p-8 border border-indigo-100">
+          <div className="flex justify-between items-center mb-6">
             <button
-              className="p-4 text-blue-700 flex items-center gap-2"
               onClick={() => navigate(-1)}
+              className="flex items-center gap-2 text-blue-500 hover:text-indigo-800 transition-colors duration-300 font-semibold"
             >
-              <FaArrowAltCircleLeft /> Back
+              <FaArrowAltCircleLeft size={22} /> Back
             </button>
+
             {user?.id === data?.user_id && (
-              <div className="flex space-x-4 ml-4">
+              <div className="flex space-x-4">
                 <a
                   href="/edit"
-                  className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
+                  className="px-5 py-2 rounded-lg bg-blue-500 text-white font-medium shadow-md hover:bg-indigo-700 transition"
                 >
                   Edit
                 </a>
                 <form method="POST">
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded"
+                    className="px-5 py-2 rounded-lg bg-red-600 text-white font-medium shadow-md hover:bg-red-700 transition"
                   >
                     Delete
                   </button>
@@ -63,36 +68,48 @@ const JobDetailsPage = () => {
               </div>
             )}
           </div>
-          <div className="p-4">
-            <JobTitle>{data?.title}</JobTitle>
-            <p className="text-gray-700 text-lg mt-2">{data?.description}</p>
+
+          <div className="mb-6">
+            <JobTitle className="text-2xl font-extrabold text-blue-500">
+              {data?.title}
+            </JobTitle>
+            <p className="mt-3 text-gray-700 text-lg leading-relaxed">{data?.description}</p>
             <JobDetail {...data} />
           </div>
-        </div>
-      </section>
-
-      <section className="container mx-auto p-4">
-        <h2 className="text-xl font-semibold mb-4">Job Details</h2>
-        <div className="rounded-lg shadow-md bg-white p-4">
-          <h3 className="text-lg font-semibold mb-2 text-blue-500">
-            Job Requirements
-          </h3>
-          <p>{data?.requirements}</p>
-          <h3 className="text-lg font-semibold mt-4 mb-2 text-blue-500">
-            Benefits
-          </h3>
-          <p>{data?.benefits}</p>
-        </div>
-        <p className="my-5">
-          Put &quot;Job Application&quot; as the subject of your email and
-          attach your resume.
+           <div className="container mx-auto p-6 max-w-4xl ">
+        <h2 className="text-2xl font-bold mb-6 text-primary border-b-2 border-indigo-300 pb-2">
+          Job Details
+        </h2>
+        <div className="rounded-xl bg-white p-8 border border-indigo-100 space-y-6">
+          <div>
+            <h3 className="text-xl font-semibold mb-2 text-blue-500">Job Requirements</h3>
+            <p className="text-gray-700 leading-relaxed">{data?.requirements}</p>
+          </div>
+          <div>
+            <h3 className="text-xl font-semibold mb-2 text-blue-500">Benefits</h3>
+            <p className="text-gray-700 leading-relaxed">{data?.benefits}</p>
+          </div>
+           <p className="my-6 text-center text-gray-600 italic">
+          Put &quot;Job Application&quot; as the subject of your email and attach your resume.
         </p>
-        <button className="block w-full text-center px-5 py-2.5 shadow-sm rounded border text-base font-medium cursor-pointer text-indigo-700 bg-indigo-100 hover:bg-indigo-200">
+
+        <button
+          className="w-full max-w-md mx-auto block px-6 py-3 rounded-md bg-blue-500 text-white text-lg font-semibold shadow-lg hover:bg-blue-600 transition-all duration-300 cursor-pointer"
+          aria-label="Apply Now"
+        >
           Apply Now
         </button>
+        </div>
+
+       
+      </div>
+        </div>
+        
       </section>
+
+     
     </div>
   );
 };
 
-export default JobDetailsPage;
+export default JobDetails;
