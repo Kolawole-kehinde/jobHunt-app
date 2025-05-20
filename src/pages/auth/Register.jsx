@@ -37,7 +37,6 @@ const Register = () => {
       email: formData.email,
       phoneNumber: formData.phoneNumber,
       password: formData.password,
-
     };
 
     setLoading(true);

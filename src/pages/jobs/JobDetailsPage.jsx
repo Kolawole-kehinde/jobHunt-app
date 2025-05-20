@@ -13,7 +13,7 @@ const Skeleton = () => (
   </div>
 );
 
-const JobDetails = () => {
+const JobDetailsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { data, status, error } = useJobs();
@@ -95,4 +95,4 @@ const JobDetails = () => {
   );
 };
 
-export default JobDetails;
+export default JobDetailsPage;

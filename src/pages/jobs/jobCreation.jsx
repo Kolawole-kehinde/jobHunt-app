@@ -55,7 +55,7 @@ const JobCreation = () => {
             Cancel
           </a>
 
-          {/* ✅ Safe display of validation messages */}
+          {/* Safe display of validation messages */}
           {Object.keys(errors).length > 0 && (
             <ul className="text-red-500 text-sm mt-4 space-y-1">
               {Object.entries(errors).map(([field, error]) => (

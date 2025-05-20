@@ -11,7 +11,7 @@ const ResetPasswordPage = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handlePaswwordReset = async () =>{
+    const handlePasswordReset = async () =>{
         if (!password || !confirmPassword) {
            toast.error('Please fill in all fields.')
            return; 
@@ -59,7 +59,7 @@ const ResetPasswordPage = () => {
     />
 
     <CustomButton
-    onClick={handlePaswwordReset}
+    onClick={handlePasswordReset}
     disabled={loading}
       className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
     >

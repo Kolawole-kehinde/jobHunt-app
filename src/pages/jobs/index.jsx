@@ -17,7 +17,7 @@ const AllJobsPage = () => {
         status={query?.status}
         jobs={query?.data}
         error={query?.error}
-        limit={null} // ✅ Show all jobs
+        limit={null} //
       />
     </>
   );
