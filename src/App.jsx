@@ -6,12 +6,13 @@ import Register from "./pages/auth/Register";
 import AllJobsPage from "./pages/jobs";
 import Dashboard from "./pages/dashboard";
 import { ProtectedRoute } from "./ProtectedRoute/ProtectedRoute";
-import JobCreation from "./pages/jobs/JobCreation";
 import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import PasswordSuccessPage from "./pages/auth/PasswordSuccess";
 import JobDetailsPage from "./pages/jobs/JobDetailsPage";
+
 import { Route, Routes } from "react-router";
+import JobCreation from "./pages/jobs/jobCreation";
 
 const App = () => {
   return (

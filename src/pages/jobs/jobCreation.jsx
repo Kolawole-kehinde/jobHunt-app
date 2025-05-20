@@ -1,4 +1,3 @@
-// pages/JobCreation.jsx
 
 import React from "react";
 import useCreateJob from "../../Components/features/hooks/useCreateJob";
@@ -15,7 +14,7 @@ const JobCreation = () => {
     errors,
     handleImageChange,
     imagePreview,
-    isPending, // ✅ Correct hook usage
+    isPending, 
   } = useCreateJob();
 
   return (
