@@ -14,7 +14,7 @@ const JobDetail = ({ salary, city, state, tags }) => {
           </span>
         </li>
         <li className="mb-2 capitalize">
-          <strong>Tags:</strong> <span>{tags}</span>
+          <strong>Tagss:</strong> <span>{tags}</span>
         </li>
       </ul>
     </div>
