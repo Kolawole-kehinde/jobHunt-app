@@ -10,7 +10,6 @@ import ForgotPasswordPage from "./pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "./pages/auth/ResetPasswordPage";
 import PasswordSuccessPage from "./pages/auth/PasswordSuccess";
 import JobDetailsPage from "./pages/jobs/JobDetailsPage";
-
 import { Route, Routes } from "react-router";
 import JobCreation from "./pages/jobs/jobCreation";
 
@@ -18,7 +17,7 @@ const App = () => {
   return (
     <>
       <NavBar />
-      <Routes>
+    <Routes>
         <Route path="/">
           {/* Unprotected Pages/Routes */}
           <Route path="auth" element={<ProtectedRoute />}>
@@ -30,6 +29,7 @@ const App = () => {
           </Route>
 
           <Route index element={<HomePage />} />
+
           <Route path="jobs">
             <Route index element={<AllJobsPage />} />
             <Route path="jobcreation" element={<JobCreation />} />

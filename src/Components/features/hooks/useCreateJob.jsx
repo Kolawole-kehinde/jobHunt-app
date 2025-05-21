@@ -12,8 +12,8 @@ import { useNavigate } from "react-router";
 
 
 const useCreateJob = () => {
-  const [image, setImage] = useState(null); // Initialize as null for clarity
-  const [imagePreview, setImagePreview] = useState(""); // Empty string for initial preview
+  const [image, setImage] = useState(null); 
+  const [imagePreview, setImagePreview] = useState(""); 
 
   const { user } = useAuth();
   const navigate = useNavigate();
