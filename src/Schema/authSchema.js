@@ -44,5 +44,8 @@ export const profileSchema = z.object({
     .string()
     .min(3, { message: "Full Name must be at least 3 characters" })
     .trim(),
+  phoneNumber: z
+    .string()
+    .min(7, { message: "Phone number must be at least 7 digits" })
+    .trim(),
 });
-

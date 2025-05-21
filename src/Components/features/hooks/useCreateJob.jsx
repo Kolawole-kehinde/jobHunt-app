@@ -9,7 +9,7 @@ import { uploadImageToCloudinary } from "../../../services/uploadImageToCloudina
 import { useNavigate } from "react-router";
 import { jobCcreationApi, updateJobApi } from "../../../services/craeateAndUpdateJobApi";
 
-const useCreateJob = ({ initialData = null, isEdit = false }) => {
+const useCreateJob = ({ initialData = null, isEdit = false } = {}) => {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(initialData?.company_logo || "");
 
