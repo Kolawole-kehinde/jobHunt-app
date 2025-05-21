@@ -1,92 +1,102 @@
 import { useForm } from "react-hook-form";
 import { jobSchema } from "../../../Schema/jobSchema";
 import { useMutation } from "@tanstack/react-query";
-import { jobCcreationApi } from "../../../services/jobApi";
 import toast from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import { uploadImageToCloudinary } from "../../../services/uploadImageToCloudinary";
 import { useNavigate } from "react-router";
+import { jobCcreationApi, updateJobApi } from "../../../services/craeateAndUpdateJobApi";
 
-
-
-const useCreateJob = () => {
-  const [image, setImage] = useState(null); 
-  const [imagePreview, setImagePreview] = useState(""); 
+const useCreateJob = ({ initialData = null, isEdit = false }) => {
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(initialData?.company_logo || "");
 
   const { user } = useAuth();
   const navigate = useNavigate();
-  const defaultValues = {
-    title: "",
-    description: "",
-    salary: "",
-    requirements: "",
-    benefits: "",
-    company: "",
-    address: "",
-    city: "",
-    state: "",
-    phone: "",
-    email: "",
-    tags: "",
-    company_website: "",
-    job_type: "",
-    work_mode: "",
-  };
 
-  // Function to handle image preview upload
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+    setValue
+  } = useForm({
+    resolver: zodResolver(jobSchema),
+    defaultValues: initialData || {
+      title: "",
+      description: "",
+      salary: "",
+      requirements: "",
+      benefits: "",
+      company: "",
+      address: "",
+      city: "",
+      state: "",
+      phone: "",
+      email: "",
+      tags: "",
+      company_website: "",
+      job_type: "",
+      work_mode: "",
+    },
+  });
+
+  useEffect(() => {
+    if (initialData) {
+      Object.keys(initialData).forEach((key) => {
+        setValue(key, initialData[key]);
+      });
+      setImagePreview(initialData.company_logo);
+    }
+  }, [initialData, setValue]);
+
+  const { isPending, mutate } = useMutation({
+    mutationFn: isEdit ? updateJobApi : jobCcreationApi,
+    onSuccess: (data) => {
+      toast.success(isEdit ? "Job Updated Successfully" : "Job Created Successfully");
+      navigate("/");
+    },
+    onError: (error) => {
+      toast.error(error.message || "Something went wrong");
+    },
+  });
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
-      setImagePreview(URL.createObjectURL(file)); // For preview
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
-    resolver: zodResolver(jobSchema),
-    defaultValues,
-  });
-
-  const { isPending, mutate } = useMutation({
-    mutationFn: jobCcreationApi,
-    onSuccess: (data) => {
-      if (data?.id) {
-        toast.success("Job Created Successfully");
-        navigate("/");
-      }
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-
   const onSubmit = async (data) => {
     try {
-      // Ensure the image is valid before uploading
-      if (!image) {
-        toast.error("Please select an image");
-        return;
+      let imageUrl = imagePreview;
+
+      if (image) {
+        const response = await uploadImageToCloudinary(image);
+        if (!response) {
+          toast.error("Image upload failed");
+          return;
+        }
+        imageUrl = response;
       }
 
-      const response = await uploadImageToCloudinary(image);
-
-      if (!response) {  // Check if response is null or undefined
-        toast.error("Image upload failed");
-        return;
-      }
-
-      mutate({
+      const payload = {
         ...data,
         user_id: user?.id,
-        company_logo: response,  // Use the image URL directly
-      });
+        company_logo: imageUrl,
+      };
 
-      reset();  // Reset form after submission
+      if (isEdit) payload.id = initialData?.id;
+
+      mutate(payload);
+      reset();
     } catch (error) {
-      console.error("Error uploading image or submitting job:", error);
-      toast.error("Something went wrong during submission");
+      console.error(error);
+      toast.error("Submission failed");
     }
   };
 
@@ -97,10 +107,8 @@ const useCreateJob = () => {
     onSubmit,
     isPending,
     handleImageChange,
-    image,
     imagePreview,
   };
 };
 
 export default useCreateJob;
-

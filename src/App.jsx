@@ -12,6 +12,7 @@ import PasswordSuccessPage from "./pages/auth/PasswordSuccess";
 import JobDetailsPage from "./pages/jobs/JobDetailsPage";
 import { Route, Routes } from "react-router";
 import JobCreation from "./pages/jobs/jobCreation";
+import EditJob from "./pages/jobs/EditJob";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
             <Route index element={<AllJobsPage />} />
             <Route path="jobcreation" element={<JobCreation />} />
             <Route path=":jobId" element={<JobDetailsPage />} />
+            <Route path="edit/:jobId" element={<EditJob />} />
           </Route>
 
           <Route path="dashboard" element={<Dashboard />} />

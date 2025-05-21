@@ -17,7 +17,7 @@ const JobDetailsPage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { jobId } = useParams();
-  const { data, status, error } = useJobs(jobId); 
+  const { data, status, error } = useJobs(jobId);
 
   console.log("Route Param jobId:", jobId);
   console.log("useJobs data:", data);
@@ -68,10 +68,12 @@ const JobDetailsPage = () => {
             {user?.id === data?.user_id && (
               <div className="flex space-x-4">
                 <button
+                  onClick={() => navigate(`/jobs/edit/${jobId}`)}
                   className="px-5 py-2 rounded-lg bg-blue-500 text-white font-medium shadow-md hover:bg-indigo-700 transition"
                 >
                   Edit
                 </button>
+
                 <form method="POST">
                   <button
                     type="submit"
@@ -88,7 +90,9 @@ const JobDetailsPage = () => {
             <JobTitle className="text-2xl font-extrabold text-blue-500">
               {data?.title}
             </JobTitle>
-            <p className="mt-3 text-gray-700 text-lg leading-relaxed">{data?.description}</p>
+            <p className="mt-3 text-gray-700 text-lg leading-relaxed">
+              {data?.description}
+            </p>
             <JobDetail {...data} />
           </div>
 
@@ -98,15 +102,24 @@ const JobDetailsPage = () => {
             </h2>
             <div className="rounded-xl bg-white p-8 border border-indigo-100 space-y-6">
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-blue-500">Job Requirements</h3>
-                <p className="text-gray-700 leading-relaxed">{data?.requirements}</p>
+                <h3 className="text-xl font-semibold mb-2 text-blue-500">
+                  Job Requirements
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  {data?.requirements}
+                </p>
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2 text-blue-500">Benefits</h3>
-                <p className="text-gray-700 leading-relaxed">{data?.benefits}</p>
+                <h3 className="text-xl font-semibold mb-2 text-blue-500">
+                  Benefits
+                </h3>
+                <p className="text-gray-700 leading-relaxed">
+                  {data?.benefits}
+                </p>
               </div>
               <p className="my-6 text-center text-gray-600 italic">
-                Put &quot;Job Application&quot; as the subject of your email and attach your resume.
+                Put &quot;Job Application&quot; as the subject of your email and
+                attach your resume.
               </p>
 
               <button

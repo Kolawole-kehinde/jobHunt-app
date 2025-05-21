@@ -1,11 +1,30 @@
-import React from "react";
-import useCreateJob from "../../Components/features/hooks/useCreateJob";
+import React, { useEffect, useState } from "react";
+
 import ImageUploadAndPreview from "../../Components/CustomInput/ImageUploadAndPreview";
 import JobTitle from "../../Components/features/jobs/JobTitle";
 import { jobFormFields } from "../../constant/jobInputLists";
 import FormSection from "../../Components/FormSection";
+import { useParams } from "react-router";
+import { supabase } from "../../libs/supabase";
+import useCreateJob from "../../Components/features/hooks/useCreateJob";
 
-const JobCreation = () => {
+const EditJob = () => {
+  const { jobId } = useParams();
+  const [job, setJob] = useState(null);
+
+  useEffect(() => {
+    const fetchJob = async () => {
+      const { data, error } = await supabase.from("jobs").select().eq("id", jobId).single();
+      if (error) {
+        console.error("Failed to fetch job:", error.message);
+      } else {
+        setJob(data);
+      }
+    };
+
+    fetchJob();
+  }, [jobId]);
+
   const {
     register,
     handleSubmit,
@@ -14,13 +33,15 @@ const JobCreation = () => {
     handleImageChange,
     imagePreview,
     isPending,
-  } = useCreateJob({ isEdit: false });
+  } = useCreateJob({ initialData: job, isEdit: true });
+
+  if (!job) return <p className="text-center mt-20">Loading job...</p>;
 
   return (
     <section className="flex justify-center items-center mt-20 px-4 lg:px-0 ">
       <div className="bg-white p-4 lg:p-8 rounded-lg shadow-md w-full md:w-600 lg:mx-6">
         <JobTitle className="text-4xl text-center font-bold mb-6">
-          Create Job Listing
+          Edit Job Listing
         </JobTitle>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
@@ -41,9 +62,9 @@ const JobCreation = () => {
           <button
             disabled={isPending}
             type="submit"
-            className="w-full bg-green-500 hover:bg-green-600 text-white px-4 py-2 mt-6 rounded focus:outline-none"
+            className="w-full bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-6 rounded focus:outline-none"
           >
-            {isPending ? "Loading..." : "Save"}
+            {isPending ? "Updating..." : "Update"}
           </button>
 
           <a
@@ -68,4 +89,4 @@ const JobCreation = () => {
   );
 };
 
-export default JobCreation;
+export default EditJob;
