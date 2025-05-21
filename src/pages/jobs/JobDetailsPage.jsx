@@ -1,48 +1,29 @@
-import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router";
-import { FaArrowAltCircleLeft } from "react-icons/fa";
-
-import useJobs from "../../Components/features/hooks/useJobs";
-import { useAuth } from "../../hooks/useAuth";
-import JobTitle from "../../Components/features/jobs/JobTitle";
-import JobDetail from "../../Components/features/jobs/jobDetail";
-import useDeleteJob from "../../Components/features/hooks/useDeleteJob";
+import useJobDetails from "../../Components/features/hooks/useJobDetails";
+import JobContent from "../../Components/features/jobs/JobContent";
+import JobHeader from "../../Components/features/jobs/JobHeader";
+import JobInfoSection from "../../Components/features/jobs/JobInfoSection";
+import JobSkeletonLoader from "../../Components/JobSkeletonLoader";
 import ConfirmModal from "../../Components/Modal/ConfirmModal";
 
-const Skeleton = () => (
-  <div className="animate-pulse p-6 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 rounded-xl shadow-lg mb-6">
-    <div className="h-7 bg-gray-300 rounded w-1/2 mb-4"></div>
-    <div className="h-5 bg-gray-300 rounded w-full mb-3"></div>
-    <div className="h-5 bg-gray-300 rounded w-3/4"></div>
-  </div>
-);
-
 const JobDetailsPage = () => {
-  const navigate = useNavigate();
-  const { user } = useAuth();
-  const { jobId } = useParams();
-  const { data, status, error } = useJobs(jobId);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const { mutate: deleteJob, isPending } = useDeleteJob();
-
-  const handleDeleteClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleConfirmDelete = () => {
-    deleteJob(jobId);
-    setIsModalOpen(false);
-  };
-
-  const handleCancelDelete = () => {
-    setIsModalOpen(false);
-  };
+  const {
+    data,
+    status,
+    error,
+    user,
+    isPending,
+    isModalOpen,
+    handleDeleteClick,
+    handleConfirmDelete,
+    handleCancelDelete,
+    navigate,
+    jobId,
+  } = useJobDetails();
 
   if (status === "pending") {
     return (
       <section className="container mx-auto p-6 mt-6">
-        <Skeleton />
+        <JobSkeletonLoader />
         <Skeleton />
         <Skeleton />
       </section>
@@ -69,86 +50,18 @@ const JobDetailsPage = () => {
     <div className="bg-gray-50 min-h-screen py-8">
       <section className="container mx-auto p-6 max-w-4xl">
         <div className="rounded-xl shadow-xl bg-white p-8 border border-indigo-100">
-          <div className="flex justify-between items-center mb-6">
-            <button
-              onClick={() => navigate(-1)}
-              className="flex items-center gap-2 text-blue-500 hover:text-indigo-800 transition-colors duration-300 font-semibold"
-            >
-              <FaArrowAltCircleLeft size={22} /> Back
-            </button>
-
-            {user?.id === data?.user_id && (
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => navigate(`/jobs/edit/${jobId}`)}
-                  className="px-5 py-2 rounded-lg bg-blue-500 text-white font-medium shadow-md hover:bg-indigo-700 transition"
-                >
-                  Edit
-                </button>
-
-                <button
-                  onClick={handleDeleteClick}
-                  disabled={isPending}
-                  className={`px-5 py-2 rounded-lg text-white font-medium shadow-md transition ${
-                    isPending
-                      ? "bg-red-300 cursor-not-allowed"
-                      : "bg-red-600 hover:bg-red-700"
-                  }`}
-                >
-                  {isPending ? "Deleting..." : "Delete"}
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="mb-6">
-            <JobTitle className="text-2xl font-extrabold text-blue-500">
-              {data?.title}
-            </JobTitle>
-            <p className="mt-3 text-gray-700 text-lg leading-relaxed">
-              {data?.description}
-            </p>
-            <JobDetail {...data} />
-          </div>
-
-          <div className="container mx-auto p-6 max-w-4xl ">
-            <h2 className="text-2xl font-bold mb-6 text-primary border-b-2 border-indigo-300 pb-2">
-              Job Details
-            </h2>
-            <div className="rounded-xl bg-white p-8 border border-indigo-100 space-y-6">
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-blue-500">
-                  Job Requirements
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {data?.requirements}
-                </p>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold mb-2 text-blue-500">
-                  Benefits
-                </h3>
-                <p className="text-gray-700 leading-relaxed">
-                  {data?.benefits}
-                </p>
-              </div>
-              <p className="my-6 text-center text-gray-600 italic">
-                Put &quot;Job Application&quot; as the subject of your email and
-                attach your resume.
-              </p>
-
-              <Link
-                to={`/apply`}
-                className="w-full max-w-md mx-auto block px-6 py-3 rounded-md bg-blue-500 text-white text-lg font-semibold shadow-lg hover:bg-blue-600 transition-all duration-300 cursor-pointer text-center"
-              >
-                Apply Now
-              </Link>
-            </div>
-          </div>
+          <JobHeader
+            onBack={() => navigate(-1)}
+            onEdit={() => navigate(`/jobs/edit/${jobId}`)}
+            onDelete={handleDeleteClick}
+            isPending={isPending}
+            canEdit={user?.id === data?.user_id}
+          />
+          <JobContent title={data.title} description={data.description} job={data} />
+          <JobInfoSection requirements={data.requirements} benefits={data.benefits} />
         </div>
       </section>
 
-      {/* Confirm Modal */}
       <ConfirmModal
         isOpen={isModalOpen}
         onConfirm={handleConfirmDelete}

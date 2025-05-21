@@ -51,12 +51,12 @@ const ProfileInfo = () => {
 
   return (
     <section className="bg-white shadow-md p-4 space-y-5 h-auto rounded-md shadow-blue-900">
-      <div className="flex flex-col md:flex-row items-center gap-6">
+      <div className="flex flex-col items-center gap-6">
         <ProfileImageUploader
           imageSrc={imagePreview || user?.profilePicture || "/default-avatar.png"}
           onChange={handleImageChange}
         />
-        <div>
+        <div className="text-center">
           <h2 className="text-2xl font-semibold">{user?.fullName}</h2>
           <p className="text-gray-600">{user?.email}</p>
           <p className="text-gray-600">{user?.phoneNumber}</p>

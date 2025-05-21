@@ -8,7 +8,7 @@ import UserJobs from '../../Components/features/dashboard/UserJobs';
 function Dashboard() {
   const { user } = useAuth();
   return (
-    <div className='bg-slate-100 w-full h-screen grid lg:grid-cols-2 gap-6 p-10'>
+    <div className='bg-slate-100 w-full h-auto grid lg:grid-cols-2 gap-6 p-10'>
        <ProfileInfo/>
        <UserJobs/>
     </div>
