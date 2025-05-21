@@ -50,7 +50,7 @@ const ProfileInfo = () => {
   };
 
   return (
-    <section className="bg-white shadow-md p-4 space-y-5 h-[500px] rounded-md shadow-blue-900">
+    <section className="bg-white shadow-md p-4 space-y-5 h-auto rounded-md shadow-blue-900">
       <div className="flex flex-col md:flex-row items-center gap-6">
         <ProfileImageUploader
           imageSrc={imagePreview || user?.profilePicture || "/default-avatar.png"}

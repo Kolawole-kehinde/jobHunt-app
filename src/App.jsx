@@ -13,6 +13,8 @@ import JobDetailsPage from "./pages/jobs/JobDetailsPage";
 import { Route, Routes } from "react-router";
 import JobCreation from "./pages/jobs/jobCreation";
 import EditJob from "./pages/jobs/EditJob";
+import ButtomBanner from "./Components/ButtomBanner";
+import ApplyPage from "./pages/jobs/ApplyPage";
 
 const App = () => {
   return (
@@ -36,11 +38,16 @@ const App = () => {
             <Route path="jobcreation" element={<JobCreation />} />
             <Route path=":jobId" element={<JobDetailsPage />} />
             <Route path="edit/:jobId" element={<EditJob />} />
+            
           </Route>
+          <Route path="/apply" element={<ApplyPage />} />
 
           <Route path="dashboard" element={<Dashboard />} />
+          
+
         </Route>
       </Routes>
+      <ButtomBanner/>
     </>
   );
 };

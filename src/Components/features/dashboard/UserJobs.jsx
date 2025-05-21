@@ -60,7 +60,7 @@ const UserJobs = () => {
   }, [jobToDelete, mutate, closeModal]);
 
   return (
-    <section className="bg-white shadow-md p-4 space-y-5 h-[500px] rounded-md shadow-blue-900 relative">
+    <section className="bg-white shadow-md p-4 space-y-5 h-auto rounded-md shadow-blue-900 relative">
       <h2 className="text-blue-900 text-2xl font-semibold">My Job Listings</h2>
 
       {isLoading && <p>Loading...</p>}

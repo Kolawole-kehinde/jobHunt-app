@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 
 import useJobs from "../../Components/features/hooks/useJobs";
@@ -90,7 +90,9 @@ const JobDetailsPage = () => {
                   onClick={handleDeleteClick}
                   disabled={isPending}
                   className={`px-5 py-2 rounded-lg text-white font-medium shadow-md transition ${
-                    isPending ? "bg-red-300 cursor-not-allowed" : "bg-red-600 hover:bg-red-700"
+                    isPending
+                      ? "bg-red-300 cursor-not-allowed"
+                      : "bg-red-600 hover:bg-red-700"
                   }`}
                 >
                   {isPending ? "Deleting..." : "Delete"}
@@ -118,25 +120,29 @@ const JobDetailsPage = () => {
                 <h3 className="text-xl font-semibold mb-2 text-blue-500">
                   Job Requirements
                 </h3>
-                <p className="text-gray-700 leading-relaxed">{data?.requirements}</p>
+                <p className="text-gray-700 leading-relaxed">
+                  {data?.requirements}
+                </p>
               </div>
               <div>
                 <h3 className="text-xl font-semibold mb-2 text-blue-500">
                   Benefits
                 </h3>
-                <p className="text-gray-700 leading-relaxed">{data?.benefits}</p>
+                <p className="text-gray-700 leading-relaxed">
+                  {data?.benefits}
+                </p>
               </div>
               <p className="my-6 text-center text-gray-600 italic">
                 Put &quot;Job Application&quot; as the subject of your email and
                 attach your resume.
               </p>
 
-              <button
-                className="w-full max-w-md mx-auto block px-6 py-3 rounded-md bg-blue-500 text-white text-lg font-semibold shadow-lg hover:bg-blue-600 transition-all duration-300 cursor-pointer"
-                aria-label="Apply Now"
+              <Link
+                to={`/apply`}
+                className="w-full max-w-md mx-auto block px-6 py-3 rounded-md bg-blue-500 text-white text-lg font-semibold shadow-lg hover:bg-blue-600 transition-all duration-300 cursor-pointer text-center"
               >
                 Apply Now
-              </button>
+              </Link>
             </div>
           </div>
         </div>
