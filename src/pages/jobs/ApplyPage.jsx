@@ -1,118 +1,194 @@
-import React, { useState } from "react";
+import { useState, useEffect } from 'react';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { supabase } from '../../libs/supabase';
+import { useAuth } from '../../hooks/useAuth';
+import { useNavigate, useParams } from 'react-router';
+import toast from 'react-hot-toast';
 
 const ApplyPage = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    city: "",
-    phone: "",
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    country: 'Nigeria',
+    city: '',
+    phone: '',
   });
+
+  const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { jobId } = useParams();
+
+  // Pre-fill email and phone from user
+  useEffect(() => {
+    if (user) {
+      setForm((prev) => ({
+        ...prev,
+        email: user.email || '',
+        phone: user.phone || '',
+      }));
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Contact info submitted:", formData);
+  const handlePhoneChange = (value) => {
+    setForm((prev) => ({ ...prev, phone: value }));
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!user?.id) {
+      toast.error('You must be logged in to apply.');
+      return;
+    }
+
+    if (!jobId) {
+      toast.error('Job ID is missing.');
+      return;
+    }
+
+    setLoading(true);
+
+    // Check if user already applied to this job
+    const { data: existingApp } = await supabase
+      .from('applications')
+      .select('id')
+      .eq('user_id', user.id)
+      .eq('job_id', jobId)
+      .single();
+
+    if (existingApp) {
+      toast.error('You can only apply once to this job.');
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await supabase.from('applications').insert([
+      {
+        first_name: form.firstName,
+        last_name: form.lastName,
+        email: form.email,
+        country: form.country,
+        city: form.city,
+        phone_number: form.phone,
+        job_id: jobId,
+        user_id: user.id,
+      },
+    ]);
+
+    if (error) {
+      toast.error(`Failed to submit application: ${error.message}`);
+    } else {
+      toast.success('Application submitted successfully!');
+      navigate('/resume-upload');
+    }
+
+    setLoading(false);
+  };
+
+  const isSubmitDisabled = loading || !user?.id || !jobId;
 
   return (
-    <div className="min-h-screen bg-white py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Progress & Header */}
-        <div className="mb-6">
-          <button className="text-blue-700 font-medium mb-2">Save and close</button>
-          <div className="w-full h-1 bg-gray-200 rounded-full mb-4">
-            <div className="h-full bg-blue-700 rounded-full w-1/5"></div>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-900">Add your contact information</h2>
-          <p className="text-gray-600 mt-1">We'll save any changes to your profile.</p>
+    <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+      <h1 className="text-2xl font-bold mb-6">Add your contact information</h1>
+
+      <form onSubmit={handleSubmit} className="space-y-4">
+        {/* First Name */}
+        <div>
+          <label htmlFor="firstName" className="block text-sm font-medium mb-1">
+            First name
+          </label>
+          <input
+            id="firstName"
+            name="firstName"
+            required
+            value={form.firstName}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded"
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className="bg-white p-6 border rounded-md shadow-sm space-y-6">
-          {/* Name Fields */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold mb-1">First name <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                required
-                className="w-full border px-4 py-2 rounded-md focus:ring-2 focus:ring-blue-600 outline-none"
-              />
-            </div>
+        {/* Last Name */}
+        <div>
+          <label htmlFor="lastName" className="block text-sm font-medium mb-1">
+            Last name
+          </label>
+          <input
+            id="lastName"
+            name="lastName"
+            required
+            value={form.lastName}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded"
+          />
+        </div>
 
-            <div>
-              <label className="block text-sm font-semibold mb-1">Last name <span className="text-red-500">*</span></label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                required
-                className="w-full border px-4 py-2 rounded-md focus:ring-2 focus:ring-blue-600 outline-none"
-              />
-            </div>
+        {/* Email (read-only) */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Email</label>
+          <div className="flex items-center justify-between">
+            <span>{form.email}</span>
+            <span className="text-blue-500 cursor-pointer" title="Email can’t be changed">ℹ️</span>
           </div>
+        </div>
 
-          {/* Email + Country */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 items-center">
-            <div>
-              <label className="block text-sm font-semibold mb-1">Email</label>
-              <p className="text-gray-800">kolawoledhikurullah93@gmail.com</p>
-            </div>
-            <div className="flex justify-end">
-              <button type="button" className="text-blue-700 font-medium">Change</button>
-            </div>
+        {/* Country (static for now) */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Country</label>
+          <div className="flex items-center justify-between">
+            <span>{form.country}</span>
+            <span className="text-blue-600 text-sm font-medium cursor-pointer">Change</span>
           </div>
+        </div>
 
-          <div>
-            <label className="block text-sm font-semibold mb-1">Country</label>
-            <p className="text-gray-800">Nigeria</p>
-          </div>
+        {/* City */}
+        <div>
+          <label htmlFor="city" className="block text-sm font-medium mb-1">
+            City
+          </label>
+          <input
+            id="city"
+            name="city"
+            required
+            value={form.city}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border rounded"
+          />
+        </div>
 
-          {/* City + Phone */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-semibold mb-1">City</label>
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                className="w-full border px-4 py-2 rounded-md focus:ring-2 focus:ring-blue-600 outline-none"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-semibold mb-1">Phone number</label>
-              <div className="flex items-center">
-                <div className="flex items-center px-3 py-2 border border-r-0 rounded-l-md bg-white">
-                  <span role="img" aria-label="Nigeria flag">🇳🇬</span>
-                  <span className="ml-2">+234</span>
-                </div>
-                <input
-                  type="tel"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full border border-l-0 px-4 py-2 rounded-r-md focus:ring-2 focus:ring-blue-600 outline-none"
-                />
-              </div>
-            </div>
-          </div>
+        {/* Phone Number */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Phone number</label>
+          <PhoneInput
+            country={'ng'}
+            value={form.phone}
+            onChange={handlePhoneChange}
+            inputClass="!w-full !px-12 !py-4 !border !rounded"
+            buttonClass="!border-r"
+          />
+        </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-700 hover:bg-blue-800 text-white font-semibold py-3 rounded-md transition duration-300"
-          >
-            Continue
-          </button>
-        </form>
-      </div>
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={isSubmitDisabled}
+          className={`w-full py-2 rounded transition ${
+            isSubmitDisabled
+              ? 'bg-gray-400 cursor-not-allowed'
+              : 'bg-blue-600 text-white hover:bg-blue-700'
+          }`}
+        >
+          {loading ? 'Submitting...' : 'Continue'}
+        </button>
+      </form>
     </div>
   );
 };

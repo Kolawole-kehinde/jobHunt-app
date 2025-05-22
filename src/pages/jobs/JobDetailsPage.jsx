@@ -1,3 +1,5 @@
+
+import { useNavigate } from "react-router";
 import useJobDetails from "../../Components/features/hooks/useJobDetails";
 import JobContent from "../../Components/features/jobs/JobContent";
 import JobHeader from "../../Components/features/jobs/JobHeader";
@@ -16,16 +18,17 @@ const JobDetailsPage = () => {
     handleDeleteClick,
     handleConfirmDelete,
     handleCancelDelete,
-    navigate,
     jobId,
   } = useJobDetails();
+
+  const navigate = useNavigate();
 
   if (status === "pending") {
     return (
       <section className="container mx-auto p-6 mt-6">
         <JobSkeletonLoader />
-        <Skeleton />
-        <Skeleton />
+        <JobSkeletonLoader />
+        <JobSkeletonLoader />
       </section>
     );
   }
@@ -58,7 +61,11 @@ const JobDetailsPage = () => {
             canEdit={user?.id === data?.user_id}
           />
           <JobContent title={data.title} description={data.description} job={data} />
-          <JobInfoSection requirements={data.requirements} benefits={data.benefits} />
+          <JobInfoSection
+            requirements={data.requirements}
+            benefits={data.benefits}
+            jobId={jobId}
+          />
         </div>
       </section>
 
