@@ -52,7 +52,8 @@ export default function ResumeUploadPage() {
       if (updateError) throw updateError;
 
       toast.success("Resume uploaded successfully!");
-      navigate("/"); // or redirect to jobs page/dashboard
+   navigate(`/review/${jobId}`);
+
     } catch (err) {
       console.error(err);
       toast.error(`Upload failed: ${err.message}`);

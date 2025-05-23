@@ -1,12 +1,11 @@
-// components/UserJobs.jsx
 import React, { useState } from "react";
 import ConfirmModal from "../../Modal/ConfirmModal";
 import CustomButton from "../../CustomBotton";
 import useUserJobs from "../hooks/useUserJobs";
 import toast from "react-hot-toast";
 import { supabase } from "../../../libs/supabase";
-import { MdDelete } from "react-icons/md";
-import { FaDownload } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
+import { FiDownload } from "react-icons/fi";
 
 const UserJobs = () => {
   const {
@@ -37,7 +36,11 @@ const UserJobs = () => {
     if (!jobToDelete) return;
 
     try {
-      const { error } = await supabase.from("jobs").delete().eq("id", jobToDelete.id);
+      const { error } = await supabase
+        .from("jobs")
+        .delete()
+        .eq("id", jobToDelete.id);
+
       if (error) throw new Error(error.message);
 
       toast.success("Job deleted successfully.");
@@ -61,11 +64,14 @@ const UserJobs = () => {
       const { id, resume_url } = applicantToDelete;
 
       if (resume_url) {
-        const path = resume_url.split("/resumes/")[1];
-        await supabase.storage.from("resumes").remove([`resumes/${path}`]);
+        await supabase.storage.from("resumes").remove([resume_url]);
       }
 
-      const { error } = await supabase.from("applications").delete().eq("id", id);
+      const { error } = await supabase
+        .from("applications")
+        .delete()
+        .eq("id", id);
+
       if (error) throw new Error(error.message);
 
       toast.success("Applicant deleted.");
@@ -75,6 +81,23 @@ const UserJobs = () => {
     } finally {
       setApplicantModalOpen(false);
       setApplicantToDelete(null);
+    }
+  };
+
+  const handleDownloadResume = async (resumeUrl) => {
+    try {
+      const path = resumeUrl.includes("resumes/") ? resumeUrl.split("resumes/")[1] : resumeUrl;
+
+      const { data, error } = await supabase.storage
+        .from("resumes")
+        .createSignedUrl(`resumes/${path}`, 60);
+
+      if (error || !data?.signedUrl) throw new Error(error?.message || "Signed URL error");
+
+      window.open(data.signedUrl, "_blank");
+    } catch (err) {
+      toast.error("Failed to download resume");
+      console.error("Resume download error:", err.message);
     }
   };
 
@@ -107,6 +130,7 @@ const UserJobs = () => {
                   className="bg-red-500 text-white py-1 px-3 rounded-md"
                   onClick={() => openModal(job)}
                 >
+                 
                   Delete
                 </CustomButton>
               </div>
@@ -121,25 +145,25 @@ const UserJobs = () => {
                     <p><strong>Email:</strong> {applicant.email}</p>
                     <p><strong>Phone:</strong> {applicant.phone_number}</p>
 
-                    <div className=" flex flex-col mt-2">
+                    <div className="flex gap-4 mt-2 items-center">
                       {applicant.resume_url ? (
-                        <a
-                          href={applicant.resume_url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-blue-600 underline flex items-center gap-1"
+                        <button
+                          onClick={() => handleDownloadResume(applicant.resume_url)}
+                          className="text-blue-600 hover:underline flex items-center"
                         >
-                          <FaDownload /> Download Resume
-                        </a>
+                          <FiDownload className="inline mr-1" size={16} />
+                          Download Resume
+                        </button>
                       ) : (
                         <span className="text-gray-400">No resume uploaded</span>
                       )}
+
                       <button
-                        className="text-red-600 hover:underline flex items-center gap-1 mt-2"
+                        className="text-red-600 hover:underline flex items-center"
                         onClick={() => handleDeleteApplicant(applicant)}
-                      
                       >
-                        <MdDelete />Delete Applicant
+                        <FaTrash className="inline mr-1" size={14} />
+                        Delete Applicant
                       </button>
                     </div>
                   </div>
