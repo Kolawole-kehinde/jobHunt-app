@@ -1,63 +1,58 @@
-// hooks/useUserJobs.js
+
 import { useState, useCallback } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "../../../libs/supabase";
-import useDeleteJob from "../hooks/useDeleteJob";
 import { useAuth } from "../../../hooks/useAuth";
+import { useNavigate } from "react-router";
 
 const useUserJobs = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { mutate, isPending } = useDeleteJob();
+  const queryClient = useQueryClient();
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [jobToDelete, setJobToDelete] = useState(null);
-
-  const { data: jobs, isLoading, isError } = useQuery({
+  const {
+    data: jobs,
+    isLoading,
+    isError,
+    isFetching,
+    refetch,
+  } = useQuery({
     queryKey: ["userJobs", user?.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("jobs")
-        .select("*")
-        .eq("user_id", user?.id);
-      if (error) throw error;
+        .select(`
+          *,
+          applications (
+            id,
+            first_name,
+            last_name,
+            email,
+            phone_number,
+            resume_url
+          )
+        `)
+        .eq("user_id", user?.id)
+        .order("created_at", { ascending: false });
+
+      if (error) throw new Error(error.message);
       return data;
     },
     enabled: !!user?.id,
     staleTime: 60000,
   });
 
-  const openModal = useCallback((job) => {
-    setJobToDelete(job);
-    setModalOpen(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setJobToDelete(null);
-    setModalOpen(false);
-  }, []);
-
-  const confirmDelete = useCallback(() => {
-    if (jobToDelete) {
-      mutate(jobToDelete.id, {
-        onSuccess: closeModal,
-        onError: () => alert("Failed to delete job. Please try again."),
-      });
-    }
-  }, [jobToDelete, mutate, closeModal]);
+  const refreshJobs = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ["userJobs", user?.id] });
+  }, [queryClient, user?.id]);
 
   return {
     jobs,
     isLoading,
     isError,
-    isPending,
+    isFetching,
     navigate,
-    modalOpen,
-    jobToDelete,
-    openModal,
-    closeModal,
-    confirmDelete,
+    refreshJobs,
   };
 };
 

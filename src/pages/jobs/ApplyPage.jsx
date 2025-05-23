@@ -5,6 +5,7 @@ import { supabase } from '../../libs/supabase';
 import { useAuth } from '../../hooks/useAuth';
 import { useNavigate, useParams } from 'react-router';
 import toast from 'react-hot-toast';
+import { InputField } from '../../Components/applyJobInputs';
 
 const ApplyPage = () => {
   const [form, setForm] = useState({
@@ -22,10 +23,10 @@ const ApplyPage = () => {
   const { user } = useAuth();
   const { jobId } = useParams();
 
-  // Pre-fill email and phone from user
+  // Prefill from user
   useEffect(() => {
     if (user) {
-      setForm((prev) => ({
+      setForm(prev => ({
         ...prev,
         email: user.email || '',
         phone: user.phone || '',
@@ -33,46 +34,41 @@ const ApplyPage = () => {
     }
   }, [user]);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    setForm(prev => ({ ...prev, [name]: value }));
   };
 
-  const handlePhoneChange = (value) => {
-    setForm((prev) => ({ ...prev, phone: value }));
+  const handlePhoneChange = value => {
+    // Add space after country code (e.g., +234 7037361571)
+    const formatted = value.replace(/(\+\d{1,4})(\d+)/, '$1 $2');
+    setForm(prev => ({ ...prev, phone: formatted }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
 
-    if (!user?.id) {
-      toast.error('You must be logged in to apply.');
-      return;
-    }
-
-    if (!jobId) {
-      toast.error('Job ID is missing.');
+    if (!user?.id || !jobId) {
+      toast.error('Missing user or job information.');
       return;
     }
 
     setLoading(true);
 
-    // Check if user already applied to this job
-    const { data: existingApp } = await supabase
-      .from('applications')
-      .select('id')
-      .eq('user_id', user.id)
-      .eq('job_id', jobId)
-      .single();
+    try {
+      const { data: existingApp } = await supabase
+        .from('applications')
+        .select('id')
+        .eq('user_id', user.id)
+        .eq('job_id', jobId)
+        .single();
 
-    if (existingApp) {
-      toast.error('You can only apply once to this job.');
-      setLoading(false);
-      return;
-    }
+      if (existingApp) {
+        toast.error('You can only apply once to this job.');
+        return;
+      }
 
-    const { error } = await supabase.from('applications').insert([
-      {
+      const { error } = await supabase.from('applications').insert([{
         first_name: form.firstName,
         last_name: form.lastName,
         email: form.email,
@@ -81,98 +77,83 @@ const ApplyPage = () => {
         phone_number: form.phone,
         job_id: jobId,
         user_id: user.id,
-      },
-    ]);
+      }]);
 
-    if (error) {
-      toast.error(`Failed to submit application: ${error.message}`);
-    } else {
+      if (error) {
+        throw new Error(error.message);
+      }
+
       toast.success('Application submitted successfully!');
-      navigate('/resume-upload');
+      navigate(`/resume-upload/${jobId}`);
+    } catch (err) {
+      toast.error(`Error: ${err.message}`);
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
 
-  const isSubmitDisabled = loading || !user?.id || !jobId;
+  const isSubmitDisabled = loading || !form.firstName || !form.lastName || !form.city;
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg">
+    <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-2xl">
       <h1 className="text-2xl font-bold mb-6">Add your contact information</h1>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* First Name */}
-        <div>
-          <label htmlFor="firstName" className="block text-sm font-medium mb-1">
-            First name
-          </label>
-          <input
-            id="firstName"
-            name="firstName"
-            required
-            value={form.firstName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
-        </div>
+        <InputField
+          id="firstName"
+          name="firstName"
+          label="First name"
+          value={form.firstName}
+          onChange={handleChange}
+        />
 
         {/* Last Name */}
-        <div>
-          <label htmlFor="lastName" className="block text-sm font-medium mb-1">
-            Last name
-          </label>
-          <input
-            id="lastName"
-            name="lastName"
-            required
-            value={form.lastName}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
-        </div>
+        <InputField
+          id="lastName"
+          name="lastName"
+          label="Last name"
+          value={form.lastName}
+          onChange={handleChange}
+        />
 
-        {/* Email (read-only) */}
+        {/* Email */}
         <div>
           <label className="block text-sm font-medium mb-1">Email</label>
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between items-center">
             <span>{form.email}</span>
-            <span className="text-blue-500 cursor-pointer" title="Email can’t be changed">ℹ️</span>
+            <span title="Email can’t be changed" className="text-blue-500 cursor-pointer">ℹ️</span>
           </div>
         </div>
 
-        {/* Country (static for now) */}
+        {/* Country */}
         <div>
           <label className="block text-sm font-medium mb-1">Country</label>
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between items-center">
             <span>{form.country}</span>
             <span className="text-blue-600 text-sm font-medium cursor-pointer">Change</span>
           </div>
         </div>
 
         {/* City */}
-        <div>
-          <label htmlFor="city" className="block text-sm font-medium mb-1">
-            City
-          </label>
-          <input
-            id="city"
-            name="city"
-            required
-            value={form.city}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border rounded"
-          />
-        </div>
+        <InputField
+          id="city"
+          name="city"
+          label="City"
+          value={form.city}
+          onChange={handleChange}
+        />
 
         {/* Phone Number */}
         <div>
           <label className="block text-sm font-medium mb-1">Phone number</label>
           <PhoneInput
-            country={'ng'}
+            country="ng"
             value={form.phone}
             onChange={handlePhoneChange}
-            inputClass="!w-full !px-12 !py-4 !border !rounded"
+            inputClass="!w-full !pl-14 !py-2 !border !rounded-2xl !border-2 !py-7"
             buttonClass="!border-r"
+            inputStyle={{ borderRadius: '1rem' }}
           />
         </div>
 
@@ -194,3 +175,5 @@ const ApplyPage = () => {
 };
 
 export default ApplyPage;
+
+

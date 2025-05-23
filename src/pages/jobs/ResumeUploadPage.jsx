@@ -1,12 +1,64 @@
 import { useState } from "react";
 import { FaUpload } from "react-icons/fa";
+import { supabase } from "../../libs/supabase";
+import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router";
 
 export default function ResumeUploadPage() {
-  const [fileName, setFileName] = useState(null);
+  const [file, setFile] = useState(null);
+  const [uploading, setUploading] = useState(false);
+  const { jobId } = useParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) setFileName(file.name);
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file || !user?.id || !jobId) {
+      toast.error("Missing file, user or job.");
+      return;
+    }
+
+    try {
+      setUploading(true);
+
+      const fileExt = file.name.split('.').pop();
+      const filePath = `resumes/${user.id}_${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('resumes')
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: urlData } = supabase.storage
+        .from('resumes')
+        .getPublicUrl(filePath);
+
+      const resumeUrl = urlData.publicUrl;
+
+      const { error: updateError } = await supabase
+        .from('applications')
+        .update({ resume_url: resumeUrl })
+        .eq('user_id', user.id)
+        .eq('job_id', jobId);
+
+      if (updateError) throw updateError;
+
+      toast.success("Resume uploaded successfully!");
+      navigate("/"); // or redirect to jobs page/dashboard
+    } catch (err) {
+      console.error(err);
+      toast.error(`Upload failed: ${err.message}`);
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -23,9 +75,11 @@ export default function ResumeUploadPage() {
             <div>
               <p className="text-blue-600 font-semibold">Upload a resume</p>
               <p className="text-sm text-gray-500">
-                Accepted file types are PDF, DOCX, RTF, or TXT.
+                Accepted file types: PDF, DOCX, RTF, or TXT.
               </p>
-              {fileName && <p className="text-sm text-green-600 mt-2">{fileName}</p>}
+              {file && (
+                <p className="text-sm text-green-600 mt-2">{file.name}</p>
+              )}
             </div>
           </div>
           <input
@@ -43,16 +97,18 @@ export default function ResumeUploadPage() {
           <div className="flex-grow border-t border-gray-300" />
         </div>
 
-        {/* Build Resume Box */}
+        {/* Build Resume Box (optional) */}
         <div className="border border-gray-300 rounded-lg p-4 bg-gray-50 hover:border-blue-500 transition">
           <div className="flex items-start space-x-3">
             <div className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded font-semibold">
               Recommended
             </div>
             <div>
-              <p className="text-blue-600 font-semibold">Build an jobhunt Resume</p>
+              <p className="text-blue-600 font-semibold">
+                Build a jobhunt Resume
+              </p>
               <p className="text-sm text-gray-600">
-                We'll guide you through it, there are only a few steps.
+                We'll guide you through it, just a few steps.
               </p>
             </div>
           </div>
@@ -60,13 +116,16 @@ export default function ResumeUploadPage() {
 
         {/* Continue Button */}
         <button
-          className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition"
-          disabled={!fileName}
+          onClick={handleUpload}
+          disabled={!file || uploading}
+          className={`w-full mt-6 font-semibold py-2 rounded-lg transition ${
+            !file || uploading
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-blue-600 text-white hover:bg-blue-700"
+          }`}
         >
-          Continue
+          {uploading ? "Uploading..." : "Continue"}
         </button>
-
-       
       </div>
     </div>
   );

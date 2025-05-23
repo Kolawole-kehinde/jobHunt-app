@@ -44,7 +44,8 @@ const App = () => {
         <Route path="apply/:jobId" element={<ApplyPage />} />
 
         <Route path="dashboard" element={<Dashboard />} />
-        <Route path="resume-upload" element={<ResumeUploadPage />} />
+      <Route path="/resume-upload/:jobId" element={<ResumeUploadPage />} />
+
       </Routes>
       <ButtomBanner />
     </>
