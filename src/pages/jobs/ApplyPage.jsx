@@ -82,8 +82,6 @@ const ApplyPage = () => {
       if (error) {
         throw new Error(error.message);
       }
-
-      toast.success('Application submitted successfully!');
       navigate(`/resume-upload/${jobId}`);
     } catch (err) {
       toast.error(`Error: ${err.message}`);

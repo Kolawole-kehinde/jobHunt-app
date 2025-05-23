@@ -17,7 +17,7 @@ import ResumeUploadPage from "./pages/jobs/ResumeUploadPage";
 import ApplyPage from "./pages/jobs/ApplyPage";
 import { Route, Routes } from "react-router";
 import ResumeReviewPage from "./pages/jobs/ReviewApplicationPage";
-import ApplicationSubmittedWrapper from "./Components/ApplicationSubmittedWrapper";
+
 
 
 const App = () => {
@@ -49,7 +49,7 @@ const App = () => {
         <Route path="dashboard" element={<Dashboard />} />
       <Route path="/resume-upload/:jobId" element={<ResumeUploadPage />} />
    <Route path="/review/:jobId" element={<ResumeReviewPage />} />
-   <Route path="/submitted" element={<ApplicationSubmittedWrapper />} />
+  
 
 
 

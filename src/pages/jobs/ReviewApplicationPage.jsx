@@ -4,6 +4,8 @@ import { supabase } from "../../libs/supabase";
 import { useNavigate, useParams } from "react-router";
 import { FaArrowLeft, FaEdit } from "react-icons/fa";
 import toast from "react-hot-toast";
+import ApplicationSubmittedModal from "../../Components/Modal/ApplicationSubmittedModal";
+
 
 export default function ResumeReviewPage() {
   const { user } = useAuth();
@@ -14,6 +16,7 @@ export default function ResumeReviewPage() {
   const [editing, setEditing] = useState({});
   const [formData, setFormData] = useState({});
   const [saving, setSaving] = useState(false);
+  const [showSubmittedModal, setShowSubmittedModal] = useState(false); // 👈 Modal state
 
   useEffect(() => {
     const fetchData = async () => {
@@ -77,10 +80,10 @@ export default function ResumeReviewPage() {
 
     setSaving(false);
   };
-    const handleSubmit = () => {
-      toast.success("Application submitted!");
-      navigate("/submitted", { state: { email: application.email } });
-    };
+
+  const handleSubmit = () => {
+    setShowSubmittedModal(true); 
+  };
 
   if (!application) return <p className="text-center mt-10">Loading...</p>;
 
@@ -170,30 +173,22 @@ export default function ResumeReviewPage() {
         </div>
       </div>
 
-      {/* Resume Section */}
-      {/* <div>
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="font-semibold text-gray-700">CV</h3>
-          <button onClick={() => toggleEdit("cv")} className="text-blue-600 flex items-center text-sm">
-            <FaEdit className="mr-1" /> Edit
-          </button>
-        </div>
-
-        <div className="border p-4 rounded-lg flex items-center gap-3 bg-gray-50">
-          <div className="bg-blue-100 p-2 rounded">
-            <span className="text-blue-600 font-bold text-xs">PDF</span>
-          </div>
-          <p className="text-sm font-medium text-gray-800">{formData.resume_url}</p>
-        </div>
-      </div> */}
-
       {/* Submit Application */}
       <button
         onClick={handleSubmit}
-        className="bg-blue-600 text-white w-full py-3 rounded-xl text-center font-semibold mt-4 hover:bg-blue-700"
+        disabled={showSubmittedModal}
+        className="bg-blue-600 text-white w-full py-3 rounded-xl text-center font-semibold mt-4 hover:bg-blue-700 disabled:opacity-50"
       >
         Submit your application
       </button>
+
+      {/* Modal */}
+      {showSubmittedModal && (
+        <ApplicationSubmittedModal
+          email={application.email}
+          onClose={() => setShowSubmittedModal(false)}
+        />
+      )}
     </div>
   );
 }
