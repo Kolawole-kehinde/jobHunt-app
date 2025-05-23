@@ -13,6 +13,11 @@ const AuthMenu = ({ menuStyle, toggleMenu }) => {
         </Link>
       </li>
       <li>
+        <Link to="my-jobs" onClick={toggleMenu}>
+          My Jobs
+        </Link>
+      </li>
+      <li>
         <Link to="/jobs" onClick={toggleMenu}>
           All Jobs
         </Link>
