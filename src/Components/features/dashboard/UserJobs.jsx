@@ -21,7 +21,7 @@ const UserJobs = () => {
   // Handlers for modals and deletion would be here, passed down to JobCard and ConfirmModal
 
   return (
-    <div className="bg-white shadow-md h-[600px] md:h-[550px] p-4 md:p-6 rounded-md space-y-6">
+    <div className="bg-white shadow-md  shadow-blue-900 h-[600px] md:h-[550px] p-4 md:p-6 rounded-md space-y-6 ">
       <h2 className="text-2xl font-bold text-blue-900 text-center md:text-left">My Job Listings</h2>
 
       {isLoading || isFetching ? (

@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { FaUpload } from "react-icons/fa";
-import { supabase } from "../../libs/supabase";
 import { useAuth } from "../../hooks/useAuth";
-import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router";
+import { useResumeUpload } from "../../Components/features/hooks/useResumeUpload";
 
-export default function ResumeUploadPage() {
+const ResumeUploadPage = () => {
   const [file, setFile] = useState(null);
-  const [uploading, setUploading] = useState(false);
   const { jobId } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  const { uploading, uploadFile } = useResumeUpload();
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
@@ -20,48 +20,9 @@ export default function ResumeUploadPage() {
   };
 
   const handleUpload = async () => {
-    if (!file || !user?.id || !jobId) {
-      toast.error("Missing file, user or job.");
-      return;
-    }
-
-    try {
-      setUploading(true);
-
-      const fileExt = file.name.split(".").pop();
-
-      // Build user name from profile
-      const fullName = `${user.first_name || ""}-${user.last_name || ""}`
-        .toLowerCase()
-        .replace(/\s+/g, "-")
-        .replace(/[^a-z0-9\-]/g, "");
-
-      const fileName = `resume-${fullName}-${Date.now()}.${fileExt}`;
-      const filePath = `resumes/${fileName}`;
-
-      // Upload file to private bucket
-      const { error: uploadError } = await supabase.storage
-        .from("resumes")
-        .upload(filePath, file, { upsert: true });
-
-      if (uploadError) throw uploadError;
-
-      // Save the private path to DB (not public URL)
-      const { error: updateError } = await supabase
-        .from("applications")
-        .update({ resume_url: filePath }) // use filePath here, not URL
-        .eq("user_id", user.id)
-        .eq("job_id", jobId);
-
-      if (updateError) throw updateError;
-
-      toast.success("Resume uploaded successfully!");
+    const result = await uploadFile({ file, user, jobId });
+    if (result) {
       navigate(`/review/${jobId}`);
-    } catch (err) {
-      console.error(err);
-      toast.error(`Upload failed: ${err.message}`);
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -134,3 +95,4 @@ export default function ResumeUploadPage() {
     </div>
   );
 }
+export default ResumeUploadPage;
