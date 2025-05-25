@@ -14,16 +14,36 @@ const ApplicantCard = ({ applicant, onDelete }) => {
     }
 
     try {
-      const path = applicant.resume_url.includes("resumes/")
-        ? applicant.resume_url.split("resumes/")[1]
-        : applicant.resume_url;
+      const url = new URL(applicant.resume_url);
+      const parts = url.pathname.split("/resumes/");
+      if (parts.length < 2) throw new Error("Invalid resume URL");
+      const pathInBucket = parts[1]; 
+
+      // Generate a signed URL for the file in the private bucket
       const { data, error } = await supabase.storage
         .from("resumes")
-        .createSignedUrl(`resumes/${path}`, 60);
+        .createSignedUrl(pathInBucket, 60)
 
-      if (error || !data?.signedUrl) throw new Error(error?.message || "Failed to generate download link");
+      if (error || !data?.signedUrl)
+        throw new Error(error?.message || "Failed to generate download link");
 
-      window.open(data.signedUrl, "_blank");
+      // Fetch the file from the signed URL
+      const res = await fetch(data.signedUrl);
+      if (!res.ok) throw new Error("Failed to fetch file");
+
+      const blob = await res.blob();
+      const downloadUrl = URL.createObjectURL(blob);
+
+      // Create a temporary anchor element to trigger the download
+      const a = document.createElement("a");
+      a.href = downloadUrl;
+      a.download = pathInBucket.split("/").pop() || "resume.pdf"; // file name
+      document.body.appendChild(a);
+      a.click();
+
+      // Clean up
+      a.remove();
+      URL.revokeObjectURL(downloadUrl);
     } catch (err) {
       toast.error("Failed to download resume");
       console.error(err);
@@ -32,9 +52,15 @@ const ApplicantCard = ({ applicant, onDelete }) => {
 
   return (
     <div className="bg-white border rounded p-4 space-y-2 max-w-md mx-auto md:mx-0">
-      <p><strong>Name:</strong> {applicant.first_name} {applicant.last_name}</p>
-      <p><strong>Email:</strong> {applicant.email}</p>
-      <p><strong>Phone:</strong> {applicant.phone_number}</p>
+      <p>
+        <strong>Name:</strong> {applicant.first_name} {applicant.last_name}
+      </p>
+      <p>
+        <strong>Email:</strong> {applicant.email}
+      </p>
+      <p>
+        <strong>Phone:</strong> {applicant.phone_number}
+      </p>
 
       <div className="flex flex-col gap-2 mt-3 items-center md:items-start">
         {applicant.resume_url ? (
