@@ -28,32 +28,35 @@ export default function ResumeUploadPage() {
     try {
       setUploading(true);
 
-      const fileExt = file.name.split('.').pop();
-      const filePath = `resumes/${user.id}_${Date.now()}.${fileExt}`;
+      const fileExt = file.name.split(".").pop();
 
+      // Build user name from profile
+      const fullName = `${user.first_name || ""}-${user.last_name || ""}`
+        .toLowerCase()
+        .replace(/\s+/g, "-")
+        .replace(/[^a-z0-9\-]/g, "");
+
+      const fileName = `resume-${fullName}-${Date.now()}.${fileExt}`;
+      const filePath = `resumes/${fileName}`;
+
+      // Upload file to private bucket
       const { error: uploadError } = await supabase.storage
-        .from('resumes')
-        .upload(filePath, file);
+        .from("resumes")
+        .upload(filePath, file, { upsert: true });
 
       if (uploadError) throw uploadError;
 
-      const { data: urlData } = supabase.storage
-        .from('resumes')
-        .getPublicUrl(filePath);
-
-      const resumeUrl = urlData.publicUrl;
-
+      // Save the private path to DB (not public URL)
       const { error: updateError } = await supabase
-        .from('applications')
-        .update({ resume_url: resumeUrl })
-        .eq('user_id', user.id)
-        .eq('job_id', jobId);
+        .from("applications")
+        .update({ resume_url: filePath }) // use filePath here, not URL
+        .eq("user_id", user.id)
+        .eq("job_id", jobId);
 
       if (updateError) throw updateError;
 
       toast.success("Resume uploaded successfully!");
-   navigate(`/review/${jobId}`);
-
+      navigate(`/review/${jobId}`);
     } catch (err) {
       console.error(err);
       toast.error(`Upload failed: ${err.message}`);

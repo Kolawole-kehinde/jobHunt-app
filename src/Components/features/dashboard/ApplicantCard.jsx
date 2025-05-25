@@ -14,34 +14,32 @@ const ApplicantCard = ({ applicant, onDelete }) => {
     }
 
     try {
-      const url = new URL(applicant.resume_url);
-      const parts = url.pathname.split("/resumes/");
-      if (parts.length < 2) throw new Error("Invalid resume URL");
-      const pathInBucket = parts[1]; 
+      const pathInBucket = applicant.resume_url; 
 
-      // Generate a signed URL for the file in the private bucket
       const { data, error } = await supabase.storage
         .from("resumes")
-        .createSignedUrl(pathInBucket, 60)
+        .createSignedUrl(pathInBucket, 60); 
 
-      if (error || !data?.signedUrl)
+      if (error || !data?.signedUrl) {
         throw new Error(error?.message || "Failed to generate download link");
+      }
 
-      // Fetch the file from the signed URL
       const res = await fetch(data.signedUrl);
       if (!res.ok) throw new Error("Failed to fetch file");
 
       const blob = await res.blob();
       const downloadUrl = URL.createObjectURL(blob);
 
-      // Create a temporary anchor element to trigger the download
       const a = document.createElement("a");
       a.href = downloadUrl;
-      a.download = pathInBucket.split("/").pop() || "resume.pdf"; // file name
+
+      // Format filename with applicant's name
+      const fileExt = pathInBucket.split(".").pop();
+      const fullName = `${applicant.first_name}_${applicant.last_name}`.replace(/\s+/g, "_");
+      a.download = `${fullName}_resume.${fileExt}`;
+
       document.body.appendChild(a);
       a.click();
-
-      // Clean up
       a.remove();
       URL.revokeObjectURL(downloadUrl);
     } catch (err) {
