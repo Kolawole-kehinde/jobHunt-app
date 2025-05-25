@@ -1,89 +1,27 @@
-import { useState, useEffect } from "react";
-import { useAuth } from "../../hooks/useAuth";
-import { supabase } from "../../libs/supabase";
-import { useNavigate, useParams } from "react-router";
-import { FaArrowLeft, FaEdit } from "react-icons/fa";
-import toast from "react-hot-toast";
-import ApplicationSubmittedModal from "../../Components/Modal/ApplicationSubmittedModal";
 
+import { useAuth } from "../../hooks/useAuth";
+import { useNavigate, useParams } from "react-router";
+import { FaArrowLeft } from "react-icons/fa";
+import ApplicationSubmittedModal from "../../Components/Modal/ApplicationSubmittedModal";
+import { useState } from "react";
+import { useReviewApplication } from "../../Components/features/hooks/useReviewApplication";
+import ContactInfo from "../../Components/resume/ContactInfo";
 
 export default function ResumeReviewPage() {
   const { user } = useAuth();
   const { jobId } = useParams();
   const navigate = useNavigate();
+  const [showSubmittedModal, setShowSubmittedModal] = useState(false);
 
-  const [application, setApplication] = useState(null);
-  const [editing, setEditing] = useState({});
-  const [formData, setFormData] = useState({});
-  const [saving, setSaving] = useState(false);
-  const [showSubmittedModal, setShowSubmittedModal] = useState(false); // 👈 Modal state
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase
-        .from("applications")
-        .select("*")
-        .eq("user_id", user.id)
-        .eq("job_id", jobId)
-        .single();
-
-      if (error) {
-        toast.error("Failed to load application");
-        return;
-      }
-
-      setApplication(data);
-      setFormData({
-        full_name: `${data.first_name} ${data.last_name}`,
-        email: data.email,
-        city: data.city,
-        phone: data.phone_number,
-        resume_filename: data.resume_filename,
-      });
-    };
-
-    if (user && jobId) fetchData();
-  }, [user, jobId]);
-
-  const toggleEdit = (field) => {
-    setEditing((prev) => ({ ...prev, [field]: !prev[field] }));
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
-
-    const [first_name, ...last] = formData.full_name.trim().split(" ");
-    const updates = {
-      first_name,
-      last_name: last.join(" "),
-      city: formData.city,
-      phone_number: formData.phone,
-    };
-
-    const { error } = await supabase
-      .from("applications")
-      .update(updates)
-      .eq("user_id", user.id)
-      .eq("job_id", jobId);
-
-    if (error) {
-      toast.error("Failed to save changes");
-    } else {
-      toast.success("Saved successfully");
-      setEditing({});
-    }
-
-    setSaving(false);
-  };
-
-  const handleSubmit = () => {
-    setShowSubmittedModal(true); 
-  };
+const {
+    application,
+    formData,
+    editing,
+    saving,
+    toggleEdit,
+    handleChange,
+    handleSave,
+  } = useReviewApplication(user?.id, jobId);
 
   if (!application) return <p className="text-center mt-10">Loading...</p>;
 
@@ -104,85 +42,21 @@ export default function ResumeReviewPage() {
 
       <h2 className="text-xl font-semibold mb-4">Please review your application</h2>
 
-      {/* Contact Info */}
-      <div className="mb-4">
-        <div className="flex justify-between items-center mb-2">
-          <h3 className="font-semibold text-gray-700">Contact information</h3>
-          <button onClick={() => toggleEdit("contact")} className="text-blue-600 flex items-center text-sm">
-            <FaEdit className="mr-1" /> Edit
-          </button>
-        </div>
+      <ContactInfo
+        editing={editing}
+        toggleEdit={toggleEdit}
+        formData={formData}
+        handleChange={handleChange}
+      />
 
-        <div className="space-y-3 border rounded-lg p-4">
-          {/* Full Name */}
-          <div>
-            <p className="text-sm text-gray-500">Full Name</p>
-            {editing.contact ? (
-              <input
-                name="full_name"
-                value={formData.full_name}
-                onChange={handleChange}
-                className="w-full border-b focus:outline-none"
-              />
-            ) : (
-              <p className="font-medium">{formData.full_name}</p>
-            )}
-          </div>
-          <hr />
-
-          {/* Email */}
-          <div>
-            <p className="text-sm text-gray-500">Email Address</p>
-            <p className="font-medium">{formData.email}</p>
-            <p className="text-xs text-gray-500 mt-1">
-              To mitigate fraud, Indeed <i>may</i> mask your email address. If masked, the employer will see an address like...
-            </p>
-          </div>
-          <hr />
-
-          {/* City */}
-          <div>
-            <p className="text-sm text-gray-500">City</p>
-            {editing.contact ? (
-              <input
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                className="w-full border-b focus:outline-none"
-              />
-            ) : (
-              <p className="font-medium">{formData.city}</p>
-            )}
-          </div>
-          <hr />
-
-          {/* Phone */}
-          <div>
-            <p className="text-sm text-gray-500">Phone Number</p>
-            {editing.contact ? (
-              <input
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="w-full border-b focus:outline-none"
-              />
-            ) : (
-              <p className="font-medium">{formData.phone}</p>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Submit Application */}
       <button
-        onClick={handleSubmit}
+        onClick={() => setShowSubmittedModal(true)}
         disabled={showSubmittedModal}
         className="bg-blue-600 text-white w-full py-3 rounded-xl text-center font-semibold mt-4 hover:bg-blue-700 disabled:opacity-50"
       >
         Submit your application
       </button>
 
-      {/* Modal */}
       {showSubmittedModal && (
         <ApplicationSubmittedModal
           email={application.email}
