@@ -3,22 +3,17 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 import { supabase } from "../../../libs/supabase";
 
-
 const useDeleteJob = () => {
-  // Access the client
   const queryClient = useQueryClient();
-
   const navigate = useNavigate();
-  const { isPending, mutate } = useMutation({
+
+  const mutation = useMutation({
     mutationFn: async (jobId) => {
       const { error } = await supabase.from("jobs").delete().eq("id", jobId);
-      if (error) {
-        throw error;
-      }
+      if (error) throw error;
     },
     onSuccess: () => {
       toast.success("Job Deleted Successfully");
-      // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
       navigate("/");
     },
@@ -26,9 +21,10 @@ const useDeleteJob = () => {
       toast.error(error.message);
     },
   });
+
   return {
-    isPending,
-    mutate,
+    isDeleting: mutation.isLoading,
+    deleteJob: mutation.mutate,
   };
 };
 
