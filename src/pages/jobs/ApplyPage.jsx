@@ -1,5 +1,5 @@
 import { useApplyForm } from "../../Components/features/hooks/useApplyForm";
-import ApplyFormFields from "../../Components/features/jobs/Applyjob/ApplyFormFields";
+import ApplyFormFields from "../../Components/features/jobs/applyjob/ApplyFormFields";
 
 
 
